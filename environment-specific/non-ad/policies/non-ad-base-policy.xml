@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Base Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Audit Mode</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Advanced Boot Options Menu</Option>
+    </Rule>
+    <Rule>
+      <Option>Required:Enforce Store Applications</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:UMCI</Option>
+    </Rule>
+  </Rules>
+  <!--EKUS-->
+  <EKUs>
+    <Eku ID="ID_EKU_STORE" Value="010A2B0601040182370A0306" FriendlyName="Windows Store EKU - 1.3.6.1.4.1.311.76.3.6 Windows Store" />
+  </EKUs>
+  <!--File Rules-->
+  <FileRules>
+    <!--Allow Microsoft Windows Publisher-->
+    <Allow ID="ID_ALLOW_WINDOWS_PUBLISHER" FriendlyName="Allow Windows Publisher" FileName="*" />
+    
+    <!--Allow Microsoft Program Files-->
+    <Allow ID="ID_ALLOW_PROGRAM_FILES" FriendlyName="Allow Program Files" FilePath="%PROGRAMFILES%\*" />
+    <Allow ID="ID_ALLOW_PROGRAM_FILES_X86" FriendlyName="Allow Program Files x86" FilePath="%PROGRAMFILES(X86)%\*" />
+    
+    <!--Deny User Folders-->
+    <Deny ID="ID_DENY_USER_PROFILE" FriendlyName="Deny User Profile" FilePath="%USERPROFILE%\*" />
+    <Deny ID="ID_DENY_PUBLIC_DOCS" FriendlyName="Deny Public Documents" FilePath="%PUBLIC%\*" />
+    
+    <!--Allow Windows Components-->
+    <Allow ID="ID_ALLOW_WINDOWS" FriendlyName="Allow Windows Components" FilePath="%WINDIR%\*" />
+    <Allow ID="ID_ALLOW_BOOT" FriendlyName="Allow Boot Components" FilePath="%SYSTEMROOT%\boot\*" />
+    
+    <!--Allow Trusted Apps from Store-->
+    <Allow ID="ID_ALLOW_STORE_APPS" FriendlyName="Allow Windows Store Apps" PackageFamilyName="*" />
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Microsoft Windows" ID="ID_SIGNER_WINDOWS">
+      <CertRoot Type="TBS" Value="3AF3D0A5D1DD36FBE18BC7AED61E0E993AE07933E2813825E9C2C20959593215" />
+      <CertPublisher Value="Microsoft Windows" />
+    </Signer>
+    <Signer Name="Microsoft Corporation" ID="ID_SIGNER_MICROSOFT_CORP">
+      <CertRoot Type="TBS" Value="8A334AA8052DD244A6473070A7360ED17A68CCF83DE4037DF79C09D5A31292E7" />
+      <CertPublisher Value="Microsoft Corporation" />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_PUBLISHER" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS" />
+          <FileRuleRef RuleID="ID_ALLOW_BOOT" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_WINDOWS" />
+          <AllowedSigner SignerId="ID_SIGNER_MICROSOFT_CORP" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_PUBLISHER" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS" />
+          <FileRuleRef RuleID="ID_ALLOW_BOOT" />
+          <FileRuleRef RuleID="ID_ALLOW_STORE_APPS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+  <UpdatePolicySigners>
+    <Signer SignerId="ID_SIGNER_WINDOWS" />
+    <Signer SignerId="ID_SIGNER_MICROSOFT_CORP" />
+  </UpdatePolicySigners>
+  <CiSigners>
+    <Signer SignerId="ID_SIGNER_WINDOWS" />
+    <Signer SignerId="ID_SIGNER_MICROSOHERT_CORP" />
+  </CiSigners>
+</Policy>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <BasePolicyID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</BasePolicyID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules - IT Department Applications-->
+  <FileRules>
+    <!--Allow remote management tools-->
+    <Allow ID="ID_ALLOW_IT_REMOTE" FriendlyName="IT Remote Management" FileName="remoteadmin.exe" FilePath="%PROGRAMFILES%\ITTools\*" />
+    
+    <!--Allow system monitoring software-->
+    <Allow ID="ID_ALLOW_MONITORING" FriendlyName="System Monitoring" FileName="monitor.exe" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_MONITORING">
+        <CertRoot Type="TBS" Value="E3F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4" />
+        <CertPublisher Value="Monitoring Solutions Inc." />
+      </Signer>
+    </Allow>
+    
+    <!--Allow development tools-->
+    <Allow ID="ID_ALLOW_DEV_TOOLS" FriendlyName="Development Tools" FileName="devtool.exe" FilePath="%PROGRAMFILES%\DevTools\*" />
+    
+    <!--Allow PowerShell for IT Admins-->
+    <Allow ID="ID_ALLOW_POWERSHELL" FriendlyName="PowerShell for IT" FileName="powershell.exe" FilePath="%WINDIR%\System32\*" />
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Monitoring Solutions Inc." ID="ID_SIGNER_MONITORING">
+      <CertRoot Type="TBS" Value="E3F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4" />
+      <CertPublisher Value="Monitoring Solutions Inc." />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_IT_REMOTE" />
+          <FileRuleRef RuleID="ID_ALLOW_DEV_TOOLS" />
+          <FileRuleRef RuleID="ID_ALLOW_POWERSHELL" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_MONITORING" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_IT_REMOTE" />
+          <FileRuleRef RuleID="ID_ALLOW_DEV_TOOLS" />
+          <FileRuleRef RuleID="ID_ALLOW_POWERSHELL" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+</Policy>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <BasePolicyID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</BasePolicyID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules - Emergency Access Applications-->
+  <FileRules>
+    <!--Allow diagnostic tools for troubleshooting-->
+    <Allow ID="ID_ALLOW_DIAGNOSTICS" FriendlyName="Diagnostic Tools" FileName="diagtool.exe" FilePath="%PROGRAMFILES%\Diagnostics\*" />
+    
+    <!--Allow temporary vendor software with expiration-->
+    <Allow ID="ID_ALLOW_TEMP_VENDOR" FriendlyName="Temporary Vendor Software" FileName="vendorapp.exe" FilePath="%PROGRAMFILES%\TempVendor\*" MinimumFileVersion="1.0.0.0" MaximumFileVersion="1.0.9999.9999" />
+    
+    <!--Allow backup and recovery tools-->
+    <Allow ID="ID_ALLOW_BACKUP" FriendlyName="Backup Tools" FileName="backup.exe" FilePath="%PROGRAMFILES%\BackupTool\*" />
+    
+    <!--Allow network analysis tools-->
+    <Allow ID="ID_ALLOW_NETWORK_ANALYSIS" FriendlyName="Network Analysis Tools" FileName="netanalyzer.exe" FilePath="%PROGRAMFILES%\NetTools\*" />
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Diagnostics Corp" ID="ID_SIGNER_DIAGNOSTICS">
+      <CertRoot Type="TBS" Value="F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4A5" />
+      <CertPublisher Value="Diagnostics Corp" />
+    </Signer>
+    <Signer Name="Backup Solutions Inc" ID="ID_SIGNER_BACKUP">
+      <CertRoot Type="TBS" Value="A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4A5B6" />
+      <CertPublisher Value="Backup Solutions Inc" />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_DIAGNOSTICS" />
+          <FileRuleRef RuleID="ID_ALLOW_TEMP_VENDOR" />
+          <FileRuleRef RuleID="ID_ALLOW_BACKUP" />
+          <FileRuleRef RuleID="ID_ALLOW_NETWORK_ANALYSIS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_DIAGNOSTICS" />
+          <AllowedSigner SignerId="ID_SIGNER_BACKUP" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_DIAGNOSTICS" />
+          <FileRuleRef RuleID="ID_ALLOW_TEMP_VENDOR" />
+          <FileRuleRef RuleID="ID_ALLOW_BACKUP" />
+          <FileRuleRef RuleID="ID_ALLOW_NETWORK_ANALYSIS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+</Policy>
