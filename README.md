@@ -41,6 +41,10 @@ This repository contains a comprehensive set of Windows Defender Application Con
 6. Deploy [enforce mode](scripts/convert_to_enforce_mode.ps1) policy on target machines
 7. Use [rollback procedures](docs/Rollback_Instructions.md) as needed
 
+## Quick Start
+
+For the fastest path to implementation, see our [Quick Start Guide](QUICK_START.md) which provides minimal steps to deploy basic WDAC policies.
+
 ## Prerequisites
 
 - Windows 10/11 Pro, Enterprise, or Education (version 1903 or later)
@@ -49,10 +53,20 @@ This repository contains a comprehensive set of Windows Defender Application Con
 
 ## Documentation
 
+### Core Documentation
 - [WDAC Full Overview](docs/WDAC_Full_Overview.md) - Complete introduction to WDAC
 - [Implementation Guides](docs/guides/) - Step-by-step deployment instructions
 - [Usage Examples](docs/examples/) - Practical scenarios and examples
 - [Architecture Diagrams](architecture/) - Visual representations of WDAC workflows
+
+### Advanced Guides
+- [Policy Deployment Guide](docs/guides/Policy_Deployment_Guide.md) - Detailed deployment procedures
+- [Advanced Policy Configuration](docs/guides/Advanced_Policy_Configuration.md) - Complex policy techniques
+- [Policy Rule Comparison](docs/guides/Policy_Rule_Comparison.md) - Choosing the right rule types
+- [Migration Guide](docs/guides/Migration_Guide.md) - Moving from other solutions
+- [Compliance Mapping](docs/guides/Compliance_Mapping.md) - Regulatory framework alignment
+- [FAQ](docs/guides/FAQ.md) - Common questions and answers
+- [Version Compatibility Matrix](docs/guides/Version_Compatibility_Matrix.md) - Feature support across versions
 
 ## Contributing
 
