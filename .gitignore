@@ -1,0 +1,33 @@
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Windows Installer
+*.msi
+*.msp
+*.msm
+
+# Temporary files
+*.tmp
+*.temp
+~*.*
+*.bak
+*.log
+
+# PowerShell
+*.ps1xml
+
+# Test artifacts
+test-files/binaries/*/*
+*.csv
+*.xml.backup
+
+# IDE
+.vs/
+*.user
+*.suo
+
+# Environment
+.env

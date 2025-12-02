@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Advanced Boot Options Menu</Option>
+    </Rule>
+    <Rule>
+      <Option>Required:Enforce Store Applications</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:UMCI</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules - Deny untrusted locations-->
+  <FileRules>
+    <!--Deny executables in user downloads folder-->
+    <Deny ID="ID_DENY_DOWNLOADS_FOLDER" FriendlyName="Deny Downloads Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\*\Downloads\*" />
+    
+    <!--Deny executables in user temp folder-->
+    <Deny ID="ID_DENY_TEMP_FOLDER" FriendlyName="Deny Temp Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\*\AppData\Local\Temp\*" />
+    
+    <!--Deny executables on removable drives-->
+    <Deny ID="ID_DENY_REMOVABLE_DRIVES" FriendlyName="Deny Removable Drive Executables" FileName="*" FilePath="%OSDRIVE%\*\*" />
+    
+    <!--Deny executables in public folders-->
+    <Deny ID="ID_DENY_PUBLIC_FOLDERS" FriendlyName="Deny Public Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\Public\*" />
+  </FileRules>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners />
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners />
+    </SigningScenario>
+  </SigningScenarios>
+  <UpdatePolicySigners>
+  </UpdatePolicySigners>
+  <HvciOptions>0</HvciOptions>
+</Policy>
