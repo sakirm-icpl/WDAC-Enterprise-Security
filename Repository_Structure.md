@@ -105,6 +105,14 @@ This repository contains everything needed to implement a robust Windows Defende
 │       └── WDAC-Utils.psm1
 ├── test-cases/                     # Comprehensive test cases
 │   └── comprehensive-test-cases.md # Detailed testing procedures
+├── custom-policies/                # Custom WDAC policies for specific testing scenarios
+│   ├── custom-base-policy.xml      # Custom base policy with specific allow/deny rules
+│   ├── deploy-custom-policy.ps1    # Script to deploy custom policy
+│   ├── test-custom-policy.ps1      # Script to test custom policy scenarios
+│   ├── monitor-audit-logs.ps1      # Real-time audit log monitoring
+│   ├── README.md                   # Documentation for custom policies
+│   ├── DEPLOY_INSTRUCTIONS.txt     # Step-by-step deployment guide
+│   └── DIRECTORY_STRUCTURE.md      # Custom policies directory structure
 ├── test-files/                     # Test files for policy validation
 │   ├── README.md                   # Test files directory overview
 │   ├── Test_Plan.md                # Comprehensive test plan

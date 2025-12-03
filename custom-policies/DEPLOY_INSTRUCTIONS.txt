@@ -1,0 +1,41 @@
+CUSTOM WDAC POLICY DEPLOYMENT INSTRUCTIONS
+=========================================
+
+1. OPEN POWERSHELL AS ADMINISTRATOR:
+   - Press Win+X
+   - Select "Windows PowerShell (Admin)" or "Windows Terminal (Admin)"
+   - Confirm UAC prompt if it appears
+
+2. NAVIGATE TO THE REPOSITORY DIRECTORY:
+   cd "C:\WADC\WDAC-Enterprise-Security"
+
+3. DEPLOY THE CUSTOM POLICY:
+   .\custom-policies\deploy-custom-policy.ps1
+
+4. RESTART YOUR COMPUTER:
+   The policy requires a system restart to take effect
+
+5. AFTER RESTART, TEST THE POLICY:
+   Open PowerShell as Administrator again
+   cd "C:\WADC\WDAC-Enterprise-Security"
+   .\custom-policies\test-custom-policy.ps1
+
+6. MONITOR AUDIT LOGS:
+   Get-WinEvent -LogName "Microsoft-Windows-CodeIntegrity/Operational" -MaxEvents 100 | Where-Object {$_.Id -eq 3076} | Select-Object TimeCreated, Message
+
+POLICY FEATURES:
+- Allows all Microsoft-signed applications
+- Allows all applications in Program Files directories
+- Blocks all files in user Downloads folders
+- Blocks all executables in OSSEC agent folder
+- Runs in Audit Mode (logs without blocking)
+
+EXPECTED TEST RESULTS:
+✓ Microsoft applications should work normally
+✓ Program Files applications should work normally
+⚠ Downloads folder files should generate audit logs (but still run in audit mode)
+⚠ OSSEC folder files should generate audit logs (but still run in audit mode)
+
+LOGGING:
+Audit logs will be written to: $env:TEMP\WDAC_Custom_Test_Log.txt
+Deployment logs will be written to: $env:TEMP\WDAC_Custom_Deployment_Log.txt

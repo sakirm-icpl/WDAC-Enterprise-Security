@@ -61,6 +61,14 @@ cd environment-specific\active-directory
 Get-WinEvent -LogName "Microsoft-Windows-CodeIntegrity/Operational" -MaxEvents 100
 ```
 
+### Custom Policy Testing (NEW)
+
+For advanced testing scenarios with specific requirements:
+1. Custom policies for specific folder restrictions
+2. Targeted blocking rules for specific directories
+3. Advanced audit logging capabilities
+
+See `custom-policies/README.md` for detailed instructions.
 ## ⚠️ Important Notes
 
 1. **Always backup existing policies** before deployment

@@ -19,8 +19,13 @@ Production-ready Windows Defender Application Control (WDAC) implementation with
 # 3. Deploy (choose your environment)
 cd environment-specific\non-ad  # or active-directory
 .\scripts\deploy-non-ad-policy.ps1  # or deploy-ad-policy.ps1
-```
 
+# 4. Custom Policy Testing (NEW)
+# For custom testing scenarios, see custom-policies directory
+cd custom-policies
+.\deploy-custom-policy.ps1  # Deploy custom policy
+.\test-custom-policy.ps1    # Test custom scenarios
+```
 ## 📊 Project Status
 
 ✅ **All XML policies validated and tested**  
@@ -212,3 +217,14 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 ✅ **All policies validated** | ✅ **All tests passing** | ✅ **Documentation complete**
 
 See [PROJECT_STATUS.md](PROJECT_STATUS.md) for complete validation results.
+
+## 🧪 Custom Policy Testing (NEW)
+
+### Custom Policy Features
+- **Allow Microsoft-signed applications** - All Microsoft signed files are permitted
+- **Allow Program Files** - All files in %PROGRAMFILES% and %PROGRAMFILES(X86)% are permitted
+- **Block Downloads folder** - All files in user Downloads folders are denied
+- **Block OSSEC agent folder** - All files in C:\Program Files (x86)\ossec-agent\active-response\bin are denied
+- **Audit Mode** - Policy runs in audit mode to log without blocking
+
+See [CUSTOM_POLICIES_SUMMARY.md](CUSTOM_POLICIES_SUMMARY.md) for detailed information and usage instructions.
