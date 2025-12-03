@@ -2,6 +2,13 @@
 
 This repository contains a comprehensive set of Windows Defender Application Control (WDAC) policies, scripts, documentation, and examples for implementing application whitelisting and control in enterprise environments. It's designed for immediate use with ready-to-deploy policies and testing procedures.
 
+## 🚀 Quick Start
+
+1. Clone this repository
+2. Review the [Getting Started Guide](GETTING_STARTED.md)
+3. Deploy policies using the provided scripts
+4. Test with the validation tools
+
 ## Repository Structure
 
 ```
@@ -9,72 +16,123 @@ This repository contains a comprehensive set of Windows Defender Application Con
 ├── docs/                           # Comprehensive documentation
 │   ├── guides/                     # Step-by-step implementation guides
 │   ├── examples/                   # Detailed usage examples
-│   ├── WDAC_Full_Overview.md       # Complete WDAC overview
-│   └── Rollback_Instructions.md    # Policy rollback procedures
+│   └── WDAC_Full_Overview.md       # Complete WDAC overview
 ├── environment-specific/           # Environment-specific policies and scripts
-│   ├── active-directory/           # AD environment implementation
-│   ├── non-ad/                     # Non-AD environment implementation
-│   ├── hybrid/                     # Hybrid environment implementation
-│   ├── shared/                     # Shared utilities and components
-│   └── implementation-summary.md   # Summary of environment implementations
-├── examples/                       # Practical policy examples
-│   ├── templates/                  # Policy templates for common scenarios
-│   └── reference/                  # Reference implementations
-├── policies/                       # Core WDAC policy files
-│   ├── BasePolicy.xml              # Base policy allowing trusted and Microsoft apps
-│   ├── DenyPolicy.xml              # Policy denying untrusted locations
-│   ├── TrustedApp.xml              # Explicitly trusted applications
-│   └── MergedPolicy.xml            # Final merged policy
-├── scripts/                        # PowerShell automation scripts
-│   ├── convert_to_audit_mode.ps1   # Convert policy to audit mode
-│   ├── convert_to_enforce_mode.ps1 # Deploy policy in enforce mode
-│   ├── merge_policies.ps1          # Merge multiple policies
-│   ├── rollback_policy.ps1         # Rollback deployed policies
-│   ├── deploy-unified-policy.ps1   # Unified deployment script for all environments
-│   └── utils/                      # Utility functions and helpers
-├── test-cases/                     # Comprehensive test cases
-│   └── comprehensive-test-cases.md # Detailed testing procedures
-├── test-files/                     # Test files for policy validation
-│   ├── binaries/                   # Sample binaries for testing
-│   └── validation/                 # Validation scripts and procedures
-├── testing-checklists/             # Environment-specific testing checklists
-├── testing-results/                # Directory for test result documentation
-├── GETTING_STARTED.md              # Quick start guide for testing
-├── QUICK_START.md                  # Minimal steps for immediate deployment
-├── DEMO_SCRIPT.md                  # Demonstration walkthrough
-├── PRESENTATION.md                 # Presentation materials
-└── LICENSE                         # License information
+│   ├── active-directory/           # AD environment policies and scripts
+│   ├── non-ad/                     # Non-AD environment policies and scripts
+│   ├── hybrid/                     # Hybrid environment policies and scripts
+│   └── shared/                     # Shared utilities and common components
+├── examples/                       # Example policies and configurations
+├── policies/                       # Generic policies for any environment
+├── scripts/                        # PowerShell scripts for policy management
+├── test-files/                     # Validation and testing files
+├── testing-checklists/             # Step-by-step testing procedures
+├── testing-results/                # Directory for storing test results
+├── DETAILED_WDAC_IMPLEMENTATION_GUIDE.md  # Complete implementation guide
+├── CUSTOM_WDAC_IMPLEMENTATION_PLAN.md     # Custom implementation plan
+├── GETTING_STARTED.md              # Quick start guide
+├── QUICK_START.md                  # Quick deployment guide
+└── README.md                       # This file
 ```
 
-## Quick Start for Testing
+## 📋 Key Features
 
-1. **Clone the repository**:
-   ```bash
-   git clone git@github.com:sakirm-icpl/WDAC-Enterprise-Security.git
-   ```
+- **Ready-to-Use Policies**: Pre-configured policies for immediate deployment
+- **Environment-Specific Solutions**: Tailored policies for AD, non-AD, and hybrid environments
+- **Unified Deployment Scripts**: Single interface for deploying across all environments
+- **Comprehensive Testing Framework**: Complete testing procedures and validation tools
+- **Detailed Documentation**: Step-by-step guides for all processes
+- **Real-World Use Cases**: Practical examples for different organization types
 
-2. **Identify your environment**:
-   - Non-AD Windows 10/11 workstations: Navigate to `environment-specific/non-ad/`
-   - AD domain-joined systems: Navigate to `environment-specific/active-directory/`
-   - Windows Server systems: Navigate to `environment-specific/non-ad/` (for standalone) or `environment-specific/active-directory/` (for domain-joined)
+## 🛠️ Core Components
 
-3. **Review ready-to-use policies**:
-   - Base policies provide foundational application control
-   - Department-specific policies allow finance, HR, and IT applications
-   - Exception policies provide temporary allowances
+### Base Policies
+- `policies/BasePolicy.xml` - Generic base policy for any environment
+- `environment-specific/non-ad/policies/non-ad-base-policy.xml` - Non-AD environment base policy
+- `environment-specific/active-directory/policies/enterprise-base-policy.xml` - AD environment base policy
 
-4. **Deploy for testing**:
-   - Non-AD: Run `environment-specific/non-ad/scripts/deploy-non-ad-policy.ps1`
-   - AD: Run `environment-specific/active-directory/scripts/deploy-ad-policy.ps1`
-   - Universal: Run `scripts/deploy-unified-policy.ps1` with appropriate parameters
+### Supplemental Policies
+- Department-specific policies for Finance, HR, and IT
+- Trusted application policies
+- Exception policies for emergency access
 
-5. **Test with the checklists**:
-   - Use checklists in `testing-checklists/` for step-by-step testing procedures
-   - Run validation scripts in `test-files/validation/` to analyze results
+### Deployment Scripts
+- `scripts/merge_policies.ps1` - Merge multiple policies into one
+- `scripts/convert_to_audit_mode.ps1` - Convert policy to audit mode
+- `scripts/convert_to_enforce_mode.ps1` - Convert policy to enforce mode
+- `scripts/rollback_policy.ps1` - Rollback deployed policies
+- `environment-specific/non-ad/scripts/deploy-non-ad-policy.ps1` - Deploy policies on non-AD systems
+- `environment-specific/active-directory/scripts/deploy-ad-policy.ps1` - Deploy policies via Group Policy
 
-6. **Analyze results**:
-   - Generate reports with `test-files/validation/Generate-TestReport.ps1`
-   - Review audit logs with `test-files/validation/Analyze-AuditLogs.ps1`
+### Testing and Validation
+- `test-files/validation/Test-WDACPolicy.ps1` - Test WDAC policy effectiveness
+- `test-files/validation/Test-FolderRestrictions.ps1` - Test folder restriction policies
+- `test-files/validation/Analyze-AuditLogs.ps1` - Analyze Code Integrity logs
+- `test-files/validation/Generate-TestReport.ps1` - Generate test reports
+
+## 📖 Documentation
+
+- [Complete WDAC Implementation Guide](DETAILED_WDAC_IMPLEMENTATION_GUIDE.md)
+- [Custom Implementation Plan](CUSTOM_WDAC_IMPLEMENTATION_PLAN.md)
+- [Getting Started Guide](GETTING_STARTED.md)
+- [Quick Start Guide](QUICK_START.md)
+- [Architecture Overview](architecture/)
+- [Policy Documentation](docs/)
+- [Testing Checklists](testing-checklists/)
+
+## 🧪 Testing
+
+The repository includes comprehensive testing frameworks for all environments:
+
+- [Windows 10/11 Non-AD Testing Checklist](testing-checklists/windows10-nonad-checklist.md)
+- [Windows 10/11 AD Testing Checklist](testing-checklists/windows10-ad-checklist.md)
+- [Windows Server Non-AD Testing Checklist](testing-checklists/windows-server-nonad-checklist.md)
+- [Windows Server AD Testing Checklist](testing-checklists/windows-server-ad-checklist.md)
+
+## 🎯 Use Cases
+
+1. **Small Business**: Non-AD environment with basic security requirements
+2. **Enterprise**: Large organization with Active Directory infrastructure
+3. **Hybrid Cloud**: Mixed environment with on-premises and cloud resources
+4. **Regulated Industries**: Organizations requiring strict application control
+
+## 📈 Benefits
+
+- **Enhanced Security**: Prevent unauthorized applications from running
+- **Compliance**: Meet regulatory requirements for application control
+- **Reduced Risk**: Minimize attack surface from malware and ransomware
+- **Centralized Management**: Consistent policy deployment across environments
+- **Auditing Capabilities**: Monitor and report on application execution
+
+## 🔄 Workflow
+
+1. **Assessment**: Evaluate current environment and applications
+2. **Policy Design**: Create base and supplemental policies
+3. **Testing**: Deploy in audit mode and validate applications
+4. **Deployment**: Switch to enforce mode for protection
+5. **Monitoring**: Continuously monitor and refine policies
+
+## 🆘 Support
+
+For issues, questions, or contributions, please:
+
+1. Check the [documentation](docs/) first
+2. Review existing [issues](../../issues)
+3. Create a new issue if needed
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Microsoft WDAC documentation and best practices
+- Community contributions and feedback
+- Security research and threat intelligence
+
+---
+
+*This repository provides a complete solution for implementing Windows Defender Application Control policies across different environments. It's designed to be cloned, customized, and deployed immediately with minimal setup.*
 
 ## Quick Start
 
