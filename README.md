@@ -1,6 +1,6 @@
-# Windows Defender Application Control (WDAC) Repository
+# Windows Defender Application Control (WDAC) Enterprise Security Repository
 
-This repository contains a comprehensive set of Windows Defender Application Control (WDAC) policies, scripts, documentation, and examples for implementing application whitelisting and control in enterprise environments.
+This repository contains a comprehensive set of Windows Defender Application Control (WDAC) policies, scripts, documentation, and examples for implementing application whitelisting and control in enterprise environments. It's designed for immediate use with ready-to-deploy policies and testing procedures.
 
 ## Repository Structure
 
@@ -30,29 +30,51 @@ This repository contains a comprehensive set of Windows Defender Application Con
 │   ├── convert_to_enforce_mode.ps1 # Deploy policy in enforce mode
 │   ├── merge_policies.ps1          # Merge multiple policies
 │   ├── rollback_policy.ps1         # Rollback deployed policies
+│   ├── deploy-unified-policy.ps1   # Unified deployment script for all environments
 │   └── utils/                      # Utility functions and helpers
 ├── test-cases/                     # Comprehensive test cases
 │   └── comprehensive-test-cases.md # Detailed testing procedures
 ├── test-files/                     # Test files for policy validation
 │   ├── binaries/                   # Sample binaries for testing
 │   └── validation/                 # Validation scripts and procedures
+├── testing-checklists/             # Environment-specific testing checklists
+├── testing-results/                # Directory for test result documentation
+├── GETTING_STARTED.md              # Quick start guide for testing
+├── QUICK_START.md                  # Minimal steps for immediate deployment
+├── DEMO_SCRIPT.md                  # Demonstration walkthrough
+├── PRESENTATION.md                 # Presentation materials
 └── LICENSE                         # License information
 ```
 
-## Getting Started
+## Quick Start for Testing
 
-1. Review the [WDAC Full Overview](docs/WDAC_Full_Overview.md) to understand WDAC fundamentals
-2. Identify your environment type (Active Directory, non-AD, or hybrid)
-3. Review the appropriate environment-specific guide:
-   - [Active Directory Implementation](environment-specific/active-directory/documentation/ad-deployment-guide.md)
-   - [Non-AD Implementation](environment-specific/non-ad/documentation/non-ad-environment-guide.md)
-   - [Hybrid Implementation](environment-specific/hybrid/documentation/hybrid-environment-guide.md)
-4. Examine the [policy templates](examples/templates/) for common use cases
-5. Customize policies in the [policies/](policies/) directory for your environment
-6. Use scripts in [scripts/](scripts/) to merge and deploy policies
-7. Test in [Audit mode](scripts/convert_to_audit_mode.ps1) before enforcing
-8. Deploy [enforce mode](scripts/convert_to_enforce_mode.ps1) policy on target machines
-9. Use [rollback procedures](docs/Rollback_Instructions.md) as needed
+1. **Clone the repository**:
+   ```bash
+   git clone git@github.com:sakirm-icpl/WDAC-Enterprise-Security.git
+   ```
+
+2. **Identify your environment**:
+   - Non-AD Windows 10/11 workstations: Navigate to `environment-specific/non-ad/`
+   - AD domain-joined systems: Navigate to `environment-specific/active-directory/`
+   - Windows Server systems: Navigate to `environment-specific/non-ad/` (for standalone) or `environment-specific/active-directory/` (for domain-joined)
+
+3. **Review ready-to-use policies**:
+   - Base policies provide foundational application control
+   - Department-specific policies allow finance, HR, and IT applications
+   - Exception policies provide temporary allowances
+
+4. **Deploy for testing**:
+   - Non-AD: Run `environment-specific/non-ad/scripts/deploy-non-ad-policy.ps1`
+   - AD: Run `environment-specific/active-directory/scripts/deploy-ad-policy.ps1`
+   - Universal: Run `scripts/deploy-unified-policy.ps1` with appropriate parameters
+
+5. **Test with the checklists**:
+   - Use checklists in `testing-checklists/` for step-by-step testing procedures
+   - Run validation scripts in `test-files/validation/` to analyze results
+
+6. **Analyze results**:
+   - Generate reports with `test-files/validation/Generate-TestReport.ps1`
+   - Review audit logs with `test-files/validation/Analyze-AuditLogs.ps1`
 
 ## Quick Start
 
@@ -86,6 +108,14 @@ For the fastest path to implementation, see our [Quick Start Guide](QUICK_START.
 - [Non-AD Implementation](environment-specific/non-ad/documentation/non-ad-environment-guide.md) - Non-AD deployment strategies
 - [Hybrid Implementation](environment-specific/hybrid/documentation/hybrid-environment-guide.md) - Hybrid environment strategies
 - [Environment Implementation Summary](environment-specific/implementation-summary.md) - Comprehensive environment comparison
+
+### Additional Resources
+- [Getting Started Guide](GETTING_STARTED.md) - Comprehensive testing walkthrough
+- [Testing Guide](docs/testing-guide.md) - Detailed testing procedures
+- [Real-World Use Cases](docs/real-world-use-cases.md) - Practical implementation examples
+- [Demo Script](DEMO_SCRIPT.md) - Repository demonstration guide
+- [Presentation Materials](PRESENTATION.md) - Slides for team presentations
+- [Final Implementation Summary](FINAL_IMPLEMENTATION_SUMMARY.md) - Complete project overview
 
 ## Contributing
 
