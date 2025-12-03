@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
-  <VersionEx>1.0.0.0</VersionEx>
+<SiPolicy xmlns="urn:schemas-microsoft-com:sipolicy">
+  <VersionEx>10.0.0.0</VersionEx>
   <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
   <Rules>
     <Rule>
@@ -23,14 +23,6 @@
     
     <!--Allow applications in a specific folder-->
     <Allow ID="ID_ALLOW_TRUSTED_FOLDER" FriendlyName="Trusted Applications Folder" FileName="*" FilePath="%PROGRAMFILES%\MyCompany\Tools\*" />
-    
-    <!--Allow a specific application by publisher-->
-    <Allow ID="ID_ALLOW_TRUSTED_PUBLISHER" FriendlyName="Trusted Publisher Applications" FileName="*" MinimumFileVersion="0.0.0.0">
-      <Signer Id="ID_SIGNER_TRUSTED_PUBLISHER">
-        <CertRoot Type="TBS" Value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
-        <CertPublisher Value="My Trusted Company Inc." />
-      </Signer>
-    </Allow>
   </FileRules>
   <!--Signers-->
   <Signers>
@@ -51,18 +43,20 @@
     </SigningScenario>
     <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
       <ProductSigners>
-        <FileRulesRef>
-          <FileRuleRef RuleID="ID_ALLOW_TRUSTED_APP_BY_HASH" />
-          <FileRuleRef RuleID="ID_ALLOW_TRUSTED_FOLDER" />
-          <FileRuleRef RuleID="ID_ALLOW_TRUSTED_PUBLISHER" />
-        </FileRulesRef>
         <AllowedSigners>
           <AllowedSigner SignerId="ID_SIGNER_TRUSTED_PUBLISHER" />
         </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_TRUSTED_APP_BY_HASH" />
+          <FileRuleRef RuleID="ID_ALLOW_TRUSTED_FOLDER" />
+        </FileRulesRef>
       </ProductSigners>
     </SigningScenario>
   </SigningScenarios>
-  <UpdatePolicySigners>
-  </UpdatePolicySigners>
+  <UpdatePolicySigners />
+  <CiSigners>
+    <CiSigner SignerId="ID_SIGNER_TRUSTED_PUBLISHER" />
+  </CiSigners>
   <HvciOptions>0</HvciOptions>
-</Policy>
+  <PolicyTypeID>{A244370E-44C9-4C06-B551-F6016E563076}</PolicyTypeID>
+</SiPolicy>

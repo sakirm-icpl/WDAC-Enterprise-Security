@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
-  <VersionEx>1.0.0.0</VersionEx>
+<SiPolicy xmlns="urn:schemas-microsoft-com:sipolicy">
+  <VersionEx>10.0.0.0</VersionEx>
   <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
   <Rules>
     <Rule>
@@ -19,16 +19,13 @@
   <!--File Rules - Deny untrusted locations-->
   <FileRules>
     <!--Deny executables in user downloads folder-->
-    <Deny ID="ID_DENY_DOWNLOADS_FOLDER" FriendlyName="Deny Downloads Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\*\Downloads\*" />
+    <Deny ID="ID_DENY_DOWNLOADS_FOLDER" FriendlyName="Deny Downloads Folder Executables" FilePath="C:\Users\*\Downloads\*" />
     
     <!--Deny executables in user temp folder-->
-    <Deny ID="ID_DENY_TEMP_FOLDER" FriendlyName="Deny Temp Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\*\AppData\Local\Temp\*" />
-    
-    <!--Deny executables on removable drives-->
-    <Deny ID="ID_DENY_REMOVABLE_DRIVES" FriendlyName="Deny Removable Drive Executables" FileName="*" FilePath="%OSDRIVE%\*\*" />
+    <Deny ID="ID_DENY_TEMP_FOLDER" FriendlyName="Deny Temp Folder Executables" FilePath="C:\Users\*\AppData\Local\Temp\*" />
     
     <!--Deny executables in public folders-->
-    <Deny ID="ID_DENY_PUBLIC_FOLDERS" FriendlyName="Deny Public Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\Public\*" />
+    <Deny ID="ID_DENY_PUBLIC_FOLDERS" FriendlyName="Deny Public Folder Executables" FilePath="C:\Users\Public\*" />
   </FileRules>
   <!--Driver Signing Scenarios-->
   <SigningScenarios>
@@ -36,10 +33,17 @@
       <ProductSigners />
     </SigningScenario>
     <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
-      <ProductSigners />
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_DENY_DOWNLOADS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_TEMP_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_PUBLIC_FOLDERS" />
+        </FileRulesRef>
+      </ProductSigners>
     </SigningScenario>
   </SigningScenarios>
-  <UpdatePolicySigners>
-  </UpdatePolicySigners>
+  <UpdatePolicySigners />
+  <CiSigners />
   <HvciOptions>0</HvciOptions>
-</Policy>
+  <PolicyTypeID>{A244370E-44C9-4C06-B551-F6016E563076}</PolicyTypeID>
+</SiPolicy>

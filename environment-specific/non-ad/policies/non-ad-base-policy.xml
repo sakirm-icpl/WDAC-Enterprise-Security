@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Base Policy">
-  <VersionEx>1.0.0.0</VersionEx>
+<SiPolicy xmlns="urn:schemas-microsoft-com:sipolicy">
+  <VersionEx>10.0.0.0</VersionEx>
   <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
+  <PolicyID>{B1234567-89AB-CDEF-0123-456789ABCDEF}</PolicyID>
+  <BasePolicyID>{B1234567-89AB-CDEF-0123-456789ABCDEF}</BasePolicyID>
   <Rules>
     <Rule>
       <Option>Enabled:Unsigned System Integrity Policy</Option>
@@ -20,28 +22,20 @@
     </Rule>
   </Rules>
   <!--EKUS-->
-  <EKUs>
-    <Eku ID="ID_EKU_STORE" Value="010A2B0601040182370A0306" FriendlyName="Windows Store EKU - 1.3.6.1.4.1.311.76.3.6 Windows Store" />
-  </EKUs>
+  <EKUs />
   <!--File Rules-->
   <FileRules>
-    <!--Allow Microsoft Windows Publisher-->
-    <Allow ID="ID_ALLOW_WINDOWS_PUBLISHER" FriendlyName="Allow Windows Publisher" FileName="*" />
-    
     <!--Allow Microsoft Program Files-->
-    <Allow ID="ID_ALLOW_PROGRAM_FILES" FriendlyName="Allow Program Files" FilePath="%PROGRAMFILES%\*" />
-    <Allow ID="ID_ALLOW_PROGRAM_FILES_X86" FriendlyName="Allow Program Files x86" FilePath="%PROGRAMFILES(X86)%\*" />
+    <Allow ID="ID_ALLOW_PROGRAM_FILES" FriendlyName="Allow Program Files" FileName="*" FilePath="%PROGRAMFILES%\*" />
+    <Allow ID="ID_ALLOW_PROGRAM_FILES_X86" FriendlyName="Allow Program Files x86" FileName="*" FilePath="%PROGRAMFILES(X86)%\*" />
     
     <!--Deny User Folders-->
-    <Deny ID="ID_DENY_USER_PROFILE" FriendlyName="Deny User Profile" FilePath="%USERPROFILE%\*" />
-    <Deny ID="ID_DENY_PUBLIC_DOCS" FriendlyName="Deny Public Documents" FilePath="%PUBLIC%\*" />
+    <Deny ID="ID_DENY_USER_PROFILE" FriendlyName="Deny User Profile" FileName="*" FilePath="%USERPROFILE%\*" />
+    <Deny ID="ID_DENY_PUBLIC_DOCS" FriendlyName="Deny Public Documents" FileName="*" FilePath="%PUBLIC%\*" />
     
     <!--Allow Windows Components-->
-    <Allow ID="ID_ALLOW_WINDOWS" FriendlyName="Allow Windows Components" FilePath="%WINDIR%\*" />
-    <Allow ID="ID_ALLOW_BOOT" FriendlyName="Allow Boot Components" FilePath="%SYSTEMROOT%\boot\*" />
-    
-    <!--Allow Trusted Apps from Store-->
-    <Allow ID="ID_ALLOW_STORE_APPS" FriendlyName="Allow Windows Store Apps" PackageFamilyName="*" />
+    <Allow ID="ID_ALLOW_WINDOWS" FriendlyName="Allow Windows Components" FileName="*" FilePath="%WINDIR%\*" />
+    <Allow ID="ID_ALLOW_BOOT" FriendlyName="Allow Boot Components" FileName="*" FilePath="%SYSTEMROOT%\boot\*" />
   </FileRules>
   <!--Signers-->
   <Signers>
@@ -58,8 +52,11 @@
   <SigningScenarios>
     <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
       <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_WINDOWS" />
+          <AllowedSigner SignerId="ID_SIGNER_MICROSOFT_CORP" />
+        </AllowedSigners>
         <FileRulesRef>
-          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_PUBLISHER" />
           <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
           <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
           <FileRuleRef RuleID="ID_ALLOW_WINDOWS" />
@@ -74,22 +71,20 @@
           <AllowedSigner SignerId="ID_SIGNER_MICROSOFT_CORP" />
         </AllowedSigners>
         <FileRulesRef>
-          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_PUBLISHER" />
           <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
           <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
           <FileRuleRef RuleID="ID_ALLOW_WINDOWS" />
           <FileRuleRef RuleID="ID_ALLOW_BOOT" />
-          <FileRuleRef RuleID="ID_ALLOW_STORE_APPS" />
+          <FileRuleRef RuleID="ID_DENY_USER_PROFILE" />
+          <FileRuleRef RuleID="ID_DENY_PUBLIC_DOCS" />
         </FileRulesRef>
       </ProductSigners>
     </SigningScenario>
   </SigningScenarios>
-  <UpdatePolicySigners>
-    <Signer SignerId="ID_SIGNER_WINDOWS" />
-    <Signer SignerId="ID_SIGNER_MICROSOFT_CORP" />
-  </UpdatePolicySigners>
+  <UpdatePolicySigners />
   <CiSigners>
-    <Signer SignerId="ID_SIGNER_WINDOWS" />
-    <Signer SignerId="ID_SIGNER_MICROSOFT_CORP" />
+    <CiSigner SignerId="ID_SIGNER_WINDOWS" />
+    <CiSigner SignerId="ID_SIGNER_MICROSOFT_CORP" />
   </CiSigners>
-</Policy>
+  <HvciOptions>0</HvciOptions>
+</SiPolicy>
