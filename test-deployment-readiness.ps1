@@ -18,13 +18,13 @@ function Write-TestResult {
     )
     
     if ($Passed) {
-        Write-Host "✓ PASS: $TestName" -ForegroundColor Green
+        Write-Host "[PASS] $TestName" -ForegroundColor Green
         if ($Message -and $DetailedOutput) {
             Write-Host "  └─ $Message" -ForegroundColor Gray
         }
         $script:TestsPassed++
     } else {
-        Write-Host "✗ FAIL: $TestName" -ForegroundColor Red
+        Write-Host "[FAIL] $TestName" -ForegroundColor Red
         if ($Message) {
             Write-Host "  └─ $Message" -ForegroundColor Yellow
         }
@@ -32,9 +32,9 @@ function Write-TestResult {
     }
 }
 
-Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     WDAC Policy Deployment Readiness Test Suite           ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
+Write-Host "`n==================================================" -ForegroundColor Cyan
+Write-Host "     WDAC Policy Deployment Readiness Test Suite" -ForegroundColor Cyan
+Write-Host "==================================================`n" -ForegroundColor Cyan
 
 # Test 1: Check PowerShell Version
 Write-Host "[1/10] Checking PowerShell Version..." -ForegroundColor Yellow
@@ -198,9 +198,9 @@ foreach ($script in $deployScripts) {
 Write-TestResult "Deployment scripts present" $scriptsExist "Required for automated deployment"
 
 # Summary
-Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                    TEST SUMMARY                            ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+Write-Host "`n==================================================" -ForegroundColor Cyan
+Write-Host "                    TEST SUMMARY" -ForegroundColor Cyan
+Write-Host "==================================================" -ForegroundColor Cyan
 
 $totalTests = $TestsPassed + $TestsFailed
 $passRate = [math]::Round(($TestsPassed / $totalTests) * 100, 1)
@@ -211,7 +211,7 @@ Write-Host "Failed: $TestsFailed" -ForegroundColor $(if ($TestsFailed -eq 0) { "
 Write-Host "Pass Rate: $passRate%" -ForegroundColor $(if ($passRate -eq 100) { "Green" } elseif ($passRate -ge 80) { "Yellow" } else { "Red" })
 
 if ($TestsFailed -eq 0) {
-    Write-Host "`n✓ ALL TESTS PASSED - Policies are ready for deployment!" -ForegroundColor Green
+    Write-Host "`n[PASS] ALL TESTS PASSED - Policies are ready for deployment!" -ForegroundColor Green
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
     Write-Host "  1. Review the deployment guide in the documentation folder" -ForegroundColor White
     Write-Host "  2. Test in a non-production environment first" -ForegroundColor White
@@ -220,7 +220,7 @@ if ($TestsFailed -eq 0) {
     Write-Host "     .\scripts\deploy-non-ad-policy.ps1" -ForegroundColor Gray
     exit 0
 } else {
-    Write-Host "`n✗ SOME TESTS FAILED - Please fix issues before deployment" -ForegroundColor Red
+    Write-Host "`n[FAIL] SOME TESTS FAILED - Please fix issues before deployment" -ForegroundColor Red
     Write-Host "`nRecommended Actions:" -ForegroundColor Cyan
     Write-Host "  1. Review the XML_FIXES_SUMMARY.md document" -ForegroundColor White
     Write-Host "  2. Run with -DetailedOutput flag for detailed error information" -ForegroundColor White

@@ -19,13 +19,15 @@ function Write-CheckResult {
         [string]$Details = ""
     )
     
-    $icon = switch ($Status) {
-        "Pass" { "✓"; $script:PassCount++; "Green" }
-        "Fail" { "✗"; $script:FailCount++; "Red" }
-        "Warn" { "⚠"; $script:WarnCount++; "Yellow" }
+    $iconChar = ""
+    $iconColor = "White"
+    switch ($Status) {
+        "Pass" { $iconChar = "[PASS]"; $script:PassCount++; $iconColor = "Green" }
+        "Fail" { $iconChar = "[FAIL]"; $script:FailCount++; $iconColor = "Red" }
+        "Warn" { $iconChar = "[WARN]"; $script:WarnCount++; $iconColor = "Yellow" }
     }
     
-    Write-Host "[$($icon[0])] $CheckName" -ForegroundColor $icon[1]
+    Write-Host "$iconChar $CheckName" -ForegroundColor $iconColor
     Write-Host "    $Message" -ForegroundColor Gray
     
     if ($Detailed -and $Details) {
@@ -347,7 +349,7 @@ Write-Host "║                    RECOMMENDATIONS                         ║" 
 Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 if ($FailCount -eq 0 -and $WarnCount -eq 0) {
-    Write-Host "✓ All checks passed! System is ready for WDAC deployment." -ForegroundColor Green
+    Write-Host "[PASS] All checks passed! System is ready for WDAC deployment." -ForegroundColor Green
     Write-Host "`nNext Steps:" -ForegroundColor Cyan
     Write-Host "  1. Run: .\test-xml-validity.ps1" -ForegroundColor White
     Write-Host "  2. Run: .\test-deployment-readiness.ps1" -ForegroundColor White
@@ -355,7 +357,7 @@ if ($FailCount -eq 0 -and $WarnCount -eq 0) {
     Write-Host "  4. Deploy: Follow deployment guide for your environment" -ForegroundColor White
     exit 0
 } elseif ($FailCount -eq 0) {
-    Write-Host "⚠ All critical checks passed, but some warnings present." -ForegroundColor Yellow
+    Write-Host "[WARN] All critical checks passed, but some warnings present." -ForegroundColor Yellow
     Write-Host "`nRecommendations:" -ForegroundColor Cyan
     Write-Host "  1. Review warnings above" -ForegroundColor White
     Write-Host "  2. Address warnings if possible" -ForegroundColor White
@@ -363,7 +365,7 @@ if ($FailCount -eq 0 -and $WarnCount -eq 0) {
     Write-Host "  4. Monitor closely after deployment" -ForegroundColor White
     exit 0
 } else {
-    Write-Host "✗ Some critical checks failed. Please address before deployment." -ForegroundColor Red
+    Write-Host "[FAIL] Some critical checks failed. Please address before deployment." -ForegroundColor Red
     Write-Host "`nRequired Actions:" -ForegroundColor Cyan
     Write-Host "  1. Review failed checks above" -ForegroundColor White
     Write-Host "  2. Address all failures" -ForegroundColor White

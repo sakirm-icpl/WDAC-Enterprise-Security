@@ -30,7 +30,7 @@ foreach ($PolicyFile in $PolicyFiles) {
     try {
         # Test XML parsing
         [xml]$XmlContent = Get-Content $PolicyFile -ErrorAction Stop
-        Write-Host "  ✓ XML is well-formed" -ForegroundColor Green
+        Write-Host "  [OK] XML is well-formed" -ForegroundColor Green
         
         # Validate root element (should be SiPolicy, not Policy)
         if ($XmlContent.DocumentElement.LocalName -ne "SiPolicy") {
@@ -38,7 +38,7 @@ foreach ($PolicyFile in $PolicyFiles) {
             $AllValid = $false
             continue
         }
-        Write-Host "  ✓ Root element is 'SiPolicy'" -ForegroundColor Green
+        Write-Host "  [OK] Root element is 'SiPolicy'" -ForegroundColor Green
         
         # Check for required elements
         $RequiredElements = @("VersionEx", "PlatformID", "Rules", "SigningScenarios", "HvciOptions")
@@ -47,14 +47,14 @@ foreach ($PolicyFile in $PolicyFiles) {
                 Write-Host "  ERROR: Missing required element: $Element" -ForegroundColor Red
                 $AllValid = $false
             } else {
-                Write-Host "  ✓ Found required element: $Element" -ForegroundColor Green
+                Write-Host "  [OK] Found required element: $Element" -ForegroundColor Green
             }
         }
         
         # Check version format (should be 10.0.0.0 or higher)
         $version = $XmlContent.SiPolicy.VersionEx
         if ($version -and $version -match '^\d+\.\d+\.\d+\.\d+$') {
-            Write-Host "  ✓ Version format valid: $version" -ForegroundColor Green
+            Write-Host "  [OK] Version format valid: $version" -ForegroundColor Green
         } else {
             Write-Host "  WARNING: Version format may be incorrect: $version" -ForegroundColor Yellow
         }
@@ -64,11 +64,11 @@ foreach ($PolicyFile in $PolicyFiles) {
             if ($null -eq $XmlContent.SiPolicy.PolicyTypeID) {
                 Write-Host "  WARNING: Supplemental policy should have PolicyTypeID" -ForegroundColor Yellow
             } else {
-                Write-Host "  ✓ PolicyTypeID present for supplemental policy" -ForegroundColor Green
+                Write-Host "  [OK] PolicyTypeID present for supplemental policy" -ForegroundColor Green
             }
         }
         
-        Write-Host "  ✓ Policy structure validated" -ForegroundColor Green
+        Write-Host "  [OK] Policy structure validated" -ForegroundColor Green
         
     } catch {
         Write-Host "  ERROR: $($_.Exception.Message)" -ForegroundColor Red
