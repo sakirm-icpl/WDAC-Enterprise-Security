@@ -2,6 +2,8 @@
 <SiPolicy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Base Policy">
   <VersionEx>1.0.0.0</VersionEx>
   <PlatformID>{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}</PlatformID>
+  <PolicyID>{A1B2C3D4-E5F6-7890-ABCD-EF0123456789}</PolicyID>
+  <BasePolicyID>{A1B2C3D4-E5F6-7890-ABCD-EF0123456789}</BasePolicyID>
   <Rules>
     <Rule>
       <Option>Enabled:Unsigned System Integrity Policy</Option>
@@ -24,18 +26,7 @@
   </Rules>
   
   <!--EKUS-->
-  <EKUs>
-    <Eku Id="ID_EKU_STORE" Value="010A2B0601040182370A0306" />
-    <Eku Id="ID_EKU_RT_EXT" Value="010A2B0601040182370A030302" />
-    <Eku Id="ID_EKU_RT" Value="010A2B0601040182370A0303" />
-    <Eku Id="ID_EKU_WHQL" Value="010A2B0601040182370A0305" />
-    <Eku Id="ID_EKU_ATTESTATION" Value="010A2B060104018237370A0301" />
-    <Eku Id="ID_EKU_ELAM" Value="010A2B060104018237370A0302" />
-    <Eku Id="ID_EKU_HAL_EXT" Value="010A2B060104018237370A0304" />
-    <Eku Id="ID_EKU_IHV_SERVICE" Value="010a2b0601040182370a0310" />
-  </EKUs>
-
-  <!--File Rules-->
+  <EKUs />
   <FileRules>
     <!--Allow all files in Program Files directories-->
     <Allow ID="ID_ALLOW_PROGRAM_FILES_X86" FriendlyName="Allow Program Files (x86)" FilePath="%PROGRAMFILES(X86)%\*" />
