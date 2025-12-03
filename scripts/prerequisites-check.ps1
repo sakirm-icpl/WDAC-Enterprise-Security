@@ -36,9 +36,9 @@ function Write-CheckResult {
     Write-Host ""
 }
 
-Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║     WDAC Deployment Prerequisites Check                   ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
+Write-Host "`n==========================================" -ForegroundColor Cyan
+Write-Host "   WDAC Deployment Prerequisites Check   " -ForegroundColor Cyan
+Write-Host "==========================================`n" -ForegroundColor Cyan
 
 # Check 1: Windows Version
 Write-Host "[1/15] Checking Windows Version..." -ForegroundColor Yellow
@@ -330,9 +330,9 @@ try {
 }
 
 # Summary
-Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                    CHECK SUMMARY                           ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host "              CHECK SUMMARY              " -ForegroundColor Cyan
+Write-Host "==========================================" -ForegroundColor Cyan
 
 $totalChecks = $PassCount + $FailCount + $WarnCount
 $passRate = [math]::Round(($PassCount / $totalChecks) * 100, 1)
@@ -344,32 +344,32 @@ Write-Host "Warnings: $WarnCount" -ForegroundColor $(if ($WarnCount -eq 0) { "Gr
 Write-Host "Pass Rate: $passRate%" -ForegroundColor $(if ($passRate -eq 100) { "Green" } elseif ($passRate -ge 80) { "Yellow" } else { "Red" })
 
 # Recommendations
-Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║                    RECOMMENDATIONS                         ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
+Write-Host "`n==========================================" -ForegroundColor Cyan
+Write-Host "           RECOMMENDATIONS              " -ForegroundColor Cyan
+Write-Host "==========================================`n" -ForegroundColor Cyan
 
 if ($FailCount -eq 0 -and $WarnCount -eq 0) {
-    Write-Host "[PASS] All checks passed! System is ready for WDAC deployment." -ForegroundColor Green
-    Write-Host "`nNext Steps:" -ForegroundColor Cyan
-    Write-Host "  1. Run: .\test-xml-validity.ps1" -ForegroundColor White
-    Write-Host "  2. Run: .\test-deployment-readiness.ps1" -ForegroundColor White
-    Write-Host "  3. Review: GETTING_STARTED.md" -ForegroundColor White
-    Write-Host "  4. Deploy: Follow deployment guide for your environment" -ForegroundColor White
+    Write-Host '[PASS] All checks passed! System is ready for WDAC deployment.' -ForegroundColor Green
+    Write-Host '`nNext Steps:' -ForegroundColor Cyan
+    Write-Host '  1. Run: .\test-xml-validity.ps1' -ForegroundColor White
+    Write-Host '  2. Run: .\test-deployment-readiness.ps1' -ForegroundColor White
+    Write-Host '  3. Review: GETTING_STARTED.md' -ForegroundColor White
+    Write-Host '  4. Deploy: Follow deployment guide for your environment' -ForegroundColor White
     exit 0
 } elseif ($FailCount -eq 0) {
-    Write-Host "[WARN] All critical checks passed, but some warnings present." -ForegroundColor Yellow
-    Write-Host "`nRecommendations:" -ForegroundColor Cyan
-    Write-Host "  1. Review warnings above" -ForegroundColor White
-    Write-Host "  2. Address warnings if possible" -ForegroundColor White
-    Write-Host "  3. Proceed with caution" -ForegroundColor White
-    Write-Host "  4. Monitor closely after deployment" -ForegroundColor White
+    Write-Host '[WARN] All critical checks passed, but some warnings present.' -ForegroundColor Yellow
+    Write-Host '`nRecommendations:' -ForegroundColor Cyan
+    Write-Host '  1. Review warnings above' -ForegroundColor White
+    Write-Host '  2. Address warnings if possible' -ForegroundColor White
+    Write-Host '  3. Proceed with caution' -ForegroundColor White
+    Write-Host '  4. Monitor closely after deployment' -ForegroundColor White
     exit 0
 } else {
-    Write-Host "[FAIL] Some critical checks failed. Please address before deployment." -ForegroundColor Red
-    Write-Host "`nRequired Actions:" -ForegroundColor Cyan
-    Write-Host "  1. Review failed checks above" -ForegroundColor White
-    Write-Host "  2. Address all failures" -ForegroundColor White
-    Write-Host "  3. Re-run this script" -ForegroundColor White
-    Write-Host "  4. Do not proceed with deployment until all checks pass" -ForegroundColor White
+    Write-Host '[FAIL] Some critical checks failed. Please address before deployment.' -ForegroundColor Red
+    Write-Host '`nRequired Actions:' -ForegroundColor Cyan
+    Write-Host '  1. Review failed checks above' -ForegroundColor White
+    Write-Host '  2. Address all failures' -ForegroundColor White
+    Write-Host '  3. Re-run this script' -ForegroundColor White
+    Write-Host '  4. Do not proceed with deployment until all checks pass' -ForegroundColor White
     exit 1
 }
