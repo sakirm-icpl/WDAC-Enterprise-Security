@@ -55,9 +55,13 @@ try {
     
     # Refresh policy
     Write-Log "Refreshing WDAC policy"
-    Invoke-CimMethod -Namespace root/Microsoft/Windows/CI -ClassName PS_UpdateAndCompareInfo -MethodName Update -Arguments @{UpdatedPSObjects = $null}
-    Write-Log "Policy refresh completed"
-    
+    try {
+        # Use the correct method to refresh CI policies
+        $refreshResult = Invoke-CimMethod -Namespace root/Microsoft/Windows/CI -ClassName CI_SystemIdentity -MethodName Refresh -ErrorAction Stop
+        Write-Log "Policy refresh completed successfully"
+    } catch {
+        Write-Log "Warning: Policy refresh failed, system restart required for changes to take effect: $($_.Exception.Message)"
+    }    
     Write-Log "Custom WDAC policy deployment completed"
     Write-Log "Please restart the system for changes to take effect"
     
