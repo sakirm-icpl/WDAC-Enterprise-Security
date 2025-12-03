@@ -90,6 +90,6 @@
   </UpdatePolicySigners>
   <CiSigners>
     <Signer SignerId="ID_SIGNER_WINDOWS" />
-    <Signer SignerId="ID_SIGNER_MICROSOHERT_CORP" />
+    <Signer SignerId="ID_SIGNER_MICROSOFT_CORP" />
   </CiSigners>
 </Policy>
