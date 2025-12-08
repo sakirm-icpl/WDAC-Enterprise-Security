@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <BasePolicyID>{A1B2C3D4-E5F6-7890-GHIJ-KLMNOPQRSTUV}</BasePolicyID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules - Finance Department Applications-->
+  <FileRules>
+    <!--Allow Excel and financial modeling tools-->
+    <Allow ID="ID_ALLOW_FINANCE_EXCEL" FriendlyName="Finance Excel" FileName="excel.exe" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_FINANCE_OFFICE">
+        <CertRoot Type="TBS" Value="8A334509347B877279E2C55B8D3E94D8B0E3E2D7A2C5F8A0B1C2D3E4F5A6B7C8" />
+        <CertPublisher Value="Microsoft Corporation" />
+      </Signer>
+    </Allow>
+    
+    <!--Allow financial software-->
+    <Allow ID="ID_ALLOW_FINANCE_SOFTWARE" FriendlyName="Financial Software" FileName="financialapp.exe" FilePath="%PROGRAMFILES%\FinanceCorp\*" />
+    
+    <!--Allow SAP GUI-->
+    <Allow ID="ID_ALLOW_SAP_GUI" FriendlyName="SAP GUI" FileName="saplogon.exe" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_SAP">
+        <CertRoot Type="TBS" Value="C1D2E3F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2" />
+        <CertPublisher Value="SAP SE" />
+      </Signer>
+    </Allow>
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Microsoft Office Finance" ID="ID_SIGNER_FINANCE_OFFICE">
+      <CertRoot Type="TBS" Value="8A334509347B877279E2C55B8D3E94D8B0E3E2D7A2C5F8A0B1C2D3E4F5A6B7C8" />
+      <CertPublisher Value="Microsoft Corporation" />
+    </Signer>
+    <Signer Name="SAP SE" ID="ID_SIGNER_SAP">
+      <CertRoot Type="TBS" Value="C1D2E3F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2" />
+      <CertPublisher Value="SAP SE" />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_SOFTWARE" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_FINANCE_OFFICE" />
+          <AllowedSigner SignerId="ID_SIGNER_SAP" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_SOFTWARE" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+</Policy>

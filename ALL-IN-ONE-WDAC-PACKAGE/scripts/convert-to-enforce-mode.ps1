@@ -1,12 +1,12 @@
-# PowerShell script to convert merged policy to Audit mode
-# Usage: .\convert_to_audit_mode.ps1 [-PolicyPath "path\to\policy.xml"] [-OutputPath "path\to\output.xml"]
+# PowerShell script to deploy policy in Enforce mode
+# Usage: .\convert_to_enforce_mode.ps1 [-PolicyPath "path\to\policy.xml"] [-OutputPath "path\to/output.xml"] [-Deploy]
 
 param(
     [Parameter(Mandatory=$false)]
     [string]$PolicyPath = "..\policies\MergedPolicy.xml",
     
     [Parameter(Mandatory=$false)]
-    [string]$OutputPath = "..\policies\MergedPolicy_Audit.xml",
+    [string]$OutputPath = "..\policies\MergedPolicy_Enforce.xml",
     
     [Parameter(Mandatory=$false)]
     [switch]$Deploy
@@ -29,7 +29,7 @@ function Write-Log {
     }
 }
 
-Write-Log "Starting WDAC Policy Conversion to Audit Mode" "INFO"
+Write-Log "Starting WDAC Policy Conversion to Enforce Mode" "INFO"
 
 # Check if policy exists
 if (-not (Test-Path $PolicyPath)) {
@@ -39,46 +39,46 @@ if (-not (Test-Path $PolicyPath)) {
     Write-Log "Policy file found: $PolicyPath" "SUCCESS"
 }
 
-Write-Log "Converting policy to Audit mode..." "INFO"
+Write-Log "Converting policy to Enforce mode..." "INFO"
 
 try {
     # Load the policy
     Write-Log "Loading policy XML..." "INFO"
     [xml]$Policy = Get-Content $PolicyPath -ErrorAction Stop
     
-    # Find or create the Audit Mode rule
+    # Find or create the Enforce Mode rule
     $RulesNode = $Policy.Policy.Rules
-    $AuditRule = $RulesNode.Rule | Where-Object { $_.Option -eq "Enabled:Audit Mode" }
-    
-    if (-not $AuditRule) {
-        # Create the audit mode rule if it doesn't exist
-        Write-Log "Adding Audit Mode rule to policy" "INFO"
-        $AuditRule = $Policy.CreateElement("Rule")
-        $Option = $Policy.CreateElement("Option")
-        $Option.InnerText = "Enabled:Audit Mode"
-        $AuditRule.AppendChild($Option) | Out-Null
-        $RulesNode.AppendChild($AuditRule) | Out-Null
-        Write-Log "Added Audit Mode rule to policy" "SUCCESS"
-    } else {
-        Write-Log "Audit Mode rule already exists in policy" "WARN"
-    }
-    
-    # Remove Enforce Mode rule if it exists
     $EnforceRule = $RulesNode.Rule | Where-Object { $_.Option -eq "Enabled:Enforce Mode" }
-    if ($EnforceRule) {
-        Write-Log "Removing Enforce Mode rule from policy" "INFO"
-        $RulesNode.RemoveChild($EnforceRule) | Out-Null
-        Write-Log "Removed Enforce Mode rule from policy" "SUCCESS"
+    
+    if (-not $EnforceRule) {
+        # Create the enforce mode rule if it doesn't exist
+        Write-Log "Adding Enforce Mode rule to policy" "INFO"
+        $EnforceRule = $Policy.CreateElement("Rule")
+        $Option = $Policy.CreateElement("Option")
+        $Option.InnerText = "Enabled:Enforce Mode"
+        $EnforceRule.AppendChild($Option) | Out-Null
+        $RulesNode.AppendChild($EnforceRule) | Out-Null
+        Write-Log "Added Enforce Mode rule to policy" "SUCCESS"
+    } else {
+        Write-Log "Enforce Mode rule already exists in policy" "WARN"
     }
     
-    # Save the audit policy
-    Write-Log "Saving audit policy to $OutputPath" "INFO"
+    # Remove Audit Mode rule if it exists
+    $AuditRule = $RulesNode.Rule | Where-Object { $_.Option -eq "Enabled:Audit Mode" }
+    if ($AuditRule) {
+        Write-Log "Removing Audit Mode rule from policy" "INFO"
+        $RulesNode.RemoveChild($AuditRule) | Out-Null
+        Write-Log "Removed Audit Mode rule from policy" "SUCCESS"
+    }
+    
+    # Save the enforce policy
+    Write-Log "Saving enforce policy to $OutputPath" "INFO"
     $Policy.Save($OutputPath)
-    Write-Log "Audit policy saved to $OutputPath" "SUCCESS"
+    Write-Log "Enforce policy saved to $OutputPath" "SUCCESS"
     
     # Deploy if requested
     if ($Deploy) {
-        Write-Log "Deploying audit policy..." "INFO"
+        Write-Log "Deploying enforce policy..." "INFO"
         
         # Convert to binary
         $BinaryPath = [System.IO.Path]::ChangeExtension($OutputPath, ".p7b")
@@ -96,7 +96,7 @@ try {
         Write-Log "Deploying policy to $DeployPath" "INFO"
         try {
             Copy-Item -Path $BinaryPath -Destination $DeployPath -Force -ErrorAction Stop
-            Write-Log "Audit policy deployed to $DeployPath" "SUCCESS"
+            Write-Log "Enforce policy deployed to $DeployPath" "SUCCESS"
         } catch {
             Write-Log "Failed to deploy policy: $($_.Exception.Message)" "ERROR"
             exit 1
@@ -105,8 +105,8 @@ try {
         Write-Log "IMPORTANT: Restart the computer for changes to take effect" "WARN"
     }
     
-    Write-Log "Conversion to Audit mode completed successfully." "SUCCESS"
+    Write-Log "Conversion to Enforce mode completed successfully." "SUCCESS"
 } catch {
-    Write-Log "Failed to convert policy to Audit mode: $($_.Exception.Message)" "ERROR"
+    Write-Log "Failed to convert policy to Enforce mode: $($_.Exception.Message)" "ERROR"
     exit 1
 }
