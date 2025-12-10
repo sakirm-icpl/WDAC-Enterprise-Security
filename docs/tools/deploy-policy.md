@@ -41,35 +41,30 @@ Forces deployment even if a policy is already deployed.
 ## Usage Examples
 
 ### Basic Policy Deployment
-
 ```powershell
 # Deploy a policy
 .\deploy-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -Deploy
 ```
 
 ### Deploy in Audit Mode
-
 ```powershell
 # Deploy policy in audit mode
 .\deploy-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -Mode Audit -Deploy
 ```
 
 ### Validate Before Deployment
-
 ```powershell
 # Validate policy before deployment
 .\deploy-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -Validate -Deploy
 ```
 
 ### Convert to Binary and Deploy
-
 ```powershell
 # Convert policy to binary format and deploy
 .\deploy-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -ConvertToBinary -Deploy
 ```
 
 ### Force Deployment
-
 ```powershell
 # Force deployment (overwrites existing policy)
 .\deploy-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -Deploy -Force

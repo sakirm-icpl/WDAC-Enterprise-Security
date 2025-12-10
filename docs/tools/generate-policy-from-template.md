@@ -45,7 +45,6 @@ Validates the generated policy for syntax and structural correctness.
 ## Usage Examples
 
 ### Basic Policy Generation
-
 ```powershell
 # Generate a policy using default paths
 .\generate-policy-from-template.ps1
@@ -55,19 +54,16 @@ Validates the generated policy for syntax and structural correctness.
 ```
 
 ### Generate Policy in Enforce Mode
-
 ```powershell
 .\generate-policy-from-template.ps1 -Mode Enforce -Version "2.1.0.0"
 ```
 
 ### Generate and Validate Policy
-
 ```powershell
 .\generate-policy-from-template.ps1 -Validate
 ```
 
 ### Generate Policy and Convert to Binary
-
 ```powershell
 .\generate-policy-from-template.ps1 -ConvertToBinary
 ```

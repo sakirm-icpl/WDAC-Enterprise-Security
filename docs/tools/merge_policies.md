@@ -4,7 +4,7 @@ This tool merges multiple WDAC policies into a single policy file.
 
 ## Overview
 
-The `merge_policies.ps1` script combines multiple WDAC policy files into a single consolidated policy. This is useful for creating complex policies that combine base rules with supplemental and deny policies.
+The `merge_policies.ps1` script combines multiple WDAC policy files into a single merged policy. This is useful for combining base policies, deny policies, trusted application policies, and additional supplemental policies into one comprehensive policy file.
 
 ## Syntax
 
@@ -38,72 +38,62 @@ Specifies an array of additional policy file paths to merge.
 Specifies the path where the merged policy will be saved. Default is `.\MergedPolicy.xml`.
 
 ### -ConvertToBinary
-Converts the merged XML policy to binary format (.bin) after merging.
+Converts the merged policy to binary format (.bin) after merging.
 
 ### -Validate
-Validates all policies before merging and the merged policy after merging.
+Validates all policies before and after merging.
 
 ### -NewVersion
-Specifies a new version for the merged policy.
+Specifies a new version number for the merged policy.
 
 ## Usage Examples
 
-### Basic Policy Merging
-
+### Basic Policy Merge
 ```powershell
-# Merge policies using default paths
+# Merge base, deny, and trusted app policies
 .\merge_policies.ps1
+```
 
+### Merge with Custom Paths
+```powershell
 # Merge policies with custom paths
-.\merge_policies.ps1 -BasePolicyPath "C:\policies\base.xml" -DenyPolicyPath "C:\policies\deny.xml" -TrustedAppPolicyPath "C:\policies\trusted.xml"
+.\merge_policies.ps1 -BasePolicyPath "C:\policies\base.xml" -DenyPolicyPath "C:\policies\deny.xml" -TrustedAppPolicyPath "C:\policies\trusted.xml" -OutputPath "C:\policies\merged.xml"
 ```
 
 ### Merge with Additional Policies
-
 ```powershell
-# Merge with additional policies
+# Merge with additional supplemental policies
 .\merge_policies.ps1 -AdditionalPolicyPaths @("C:\policies\department1.xml", "C:\policies\department2.xml")
 ```
 
-### Merge and Validate Policies
-
-```powershell
-# Validate all policies before and after merging
-.\merge_policies.ps1 -Validate
-```
-
 ### Merge and Convert to Binary
-
 ```powershell
-# Convert merged policy to binary format
+# Merge policies and convert to binary format
 .\merge_policies.ps1 -ConvertToBinary
 ```
 
-### Update Policy Version
-
+### Merge with Validation
 ```powershell
-# Set a new version for the merged policy
+# Merge policies with validation
+.\merge_policies.ps1 -Validate
+```
+
+### Merge with New Version
+```powershell
+# Merge policies and set a new version
 .\merge_policies.ps1 -NewVersion "2.0.0.0"
 ```
 
-## Merging Process
+## Merge Process
 
 The script merges policies in the following order:
 
-1. **Base Policy**: The foundation policy
-2. **Deny Policy**: Rules that explicitly deny applications
-3. **Trusted App Policy**: Rules that explicitly allow applications
-4. **Additional Policies**: Any additional policies specified
-
-Each policy is merged sequentially using the `Merge-CIPolicy` cmdlet.
-
-## Output
-
-The script generates:
-
-1. A merged XML policy file at the specified output path
-2. Optionally, a binary version of the policy (.bin file)
-3. Validation results if the `-Validate` parameter is used
+1. **Base Policy**: The foundation policy that all others merge into
+2. **Deny Policy**: Policies that explicitly deny applications
+3. **Trusted App Policy**: Policies that explicitly allow trusted applications
+4. **Additional Policies**: Any supplemental policies specified
+5. **Validation**: Optional validation of the merged policy
+6. **Conversion**: Optional conversion to binary format
 
 ## Prerequisites
 
@@ -112,38 +102,55 @@ The script generates:
 - ConfigCI PowerShell module
 - Administrator privileges (for some operations)
 
-## Error Handling
+## Output
 
-The script includes comprehensive error handling:
+The script generates:
+1. A merged XML policy file at the specified output path
+2. Optionally, a binary version of the policy (.bin file)
+3. Validation results if the `-Validate` parameter is used
 
-- Validates PowerShell version compatibility
-- Checks for required modules
-- Verifies all policy files exist
-- Handles merge conflicts
-- Provides detailed error messages
+## Policy Merge Considerations
+
+### Policy Types
+- **Base Policies**: Foundation policies that can have supplemental policies
+- **Supplemental Policies**: Extend base policies with additional rules
+- **Deny Policies**: Explicitly block applications or paths
+- **Trusted App Policies**: Explicitly allow specific applications
+
+### Merge Order
+Policies are merged in a specific order to ensure proper rule precedence:
+1. Base policy is loaded first
+2. Deny policies are merged next (deny rules take precedence)
+3. Trusted app policies are merged
+4. Additional policies are merged last
+
+### Conflict Resolution
+When merging policies:
+- Deny rules typically take precedence over allow rules
+- More specific rules override less specific ones
+- Later merged policies can override earlier ones
 
 ## Best Practices
 
-1. **Always validate policies** before merging using the `-Validate` parameter
-2. **Test merged policies** in audit mode first
-3. **Document merge operations** and the policies involved
-4. **Use meaningful names** for merged policies
-5. **Maintain version control** for all policies
-6. **Backup original policies** before merging
+1. **Validate Policies Before Merging**: Use the `-Validate` parameter to ensure all policies are syntactically correct
+2. **Test Merged Policies**: Deploy in audit mode first to verify effectiveness
+3. **Document Merge Operations**: Keep records of which policies were merged and when
+4. **Use Meaningful Names**: Name policies descriptively to aid in management
+5. **Version Control**: Maintain version history of merged policies
+6. **Backup Original Policies**: Keep copies of original policies before merging
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Merge conflicts**: Check for conflicting rules between policies
-2. **Invalid policies**: Validate individual policies before merging
-3. **Permission denied**: Run PowerShell as Administrator
-4. **Module not found**: Ensure the ConfigCI module is available
+1. **Policy validation failures**: Check policy syntax and structure
+2. **Merge conflicts**: Review policy rules for overlapping or conflicting rules
+3. **Missing policies**: Verify all specified policy files exist
+4. **Permission denied**: Run PowerShell as Administrator if needed
 
 ### Diagnostic Information
 
 The script provides detailed logging to help troubleshoot issues:
-
 - Informational messages about the merge process
 - Warning messages for potential issues
 - Error messages with specific details

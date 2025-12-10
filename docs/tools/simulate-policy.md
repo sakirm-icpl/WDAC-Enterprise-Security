@@ -4,7 +4,7 @@ This tool simulates WDAC policy enforcement to test policies before deployment.
 
 ## Overview
 
-The `simulate-policy.ps1` script provides a safe way to test WDAC policies against actual files without deploying them to the system. It analyzes how a policy would treat files in a specified directory, helping you validate policy effectiveness before enforcement.
+The `simulate-policy.ps1` script allows you to test WDAC policies against actual files on your system without actually enforcing the policy. This helps identify which files would be allowed or blocked by a policy before deployment, reducing the risk of blocking legitimate applications.
 
 ## Syntax
 
@@ -23,51 +23,46 @@ simulate-policy.ps1
 Specifies the path to the WDAC policy file to simulate. This parameter is mandatory.
 
 ### -TestPath
-Specifies the path to the directory containing files to test against the policy. Default is the current directory.
+Specifies the path to scan for files to test against the policy. Default is the current directory.
 
 ### -IncludeSubdirectories
 Includes subdirectories when scanning for files to test.
 
 ### -OutputReport
-Specifies the path where the HTML simulation report will be saved. Default is `.\policy-simulation-report.html`.
+Specifies the path where the HTML report will be saved. Default is `.\policy-simulation-report.html`.
 
 ### -DetailedLogging
-Enables detailed logging to a temporary file for troubleshooting.
+Enables detailed logging to a temporary file.
 
 ## Usage Examples
 
 ### Basic Policy Simulation
-
 ```powershell
 # Simulate a policy against files in the current directory
 .\simulate-policy.ps1 -PolicyPath "C:\policies\my-policy.xml"
 ```
 
 ### Simulate Against Specific Directory
-
 ```powershell
-# Simulate against a specific directory
+# Simulate a policy against files in a specific directory
 .\simulate-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -TestPath "C:\Program Files"
 ```
 
-### Include Subdirectories
-
+### Simulate with Subdirectories
 ```powershell
 # Include subdirectories in the simulation
 .\simulate-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -TestPath "C:\Program Files" -IncludeSubdirectories
 ```
 
-### Custom Report Output
-
+### Custom Output Report
 ```powershell
-# Save report to a custom location
-.\simulate-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -OutputReport "C:\reports\simulation.html"
+# Save the report to a custom location
+.\simulate-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -OutputReport "C:\reports\simulation-results.html"
 ```
 
 ### Detailed Logging
-
 ```powershell
-# Enable detailed logging
+# Enable detailed logging for troubleshooting
 .\simulate-policy.ps1 -PolicyPath "C:\policies\my-policy.xml" -DetailedLogging
 ```
 
@@ -75,132 +70,117 @@ Enables detailed logging to a temporary file for troubleshooting.
 
 The script performs the following steps during simulation:
 
-1. **Policy Loading**: Loads and parses the WDAC policy file
-2. **File Discovery**: Scans the specified directory for executable files
-3. **Policy Evaluation**: Tests each file against the policy rules
-4. **Result Analysis**: Determines if each file would be allowed or denied
-5. **Report Generation**: Creates a detailed HTML report of findings
+1. **Policy Loading**: Loads and parses the specified WDAC policy
+2. **File Discovery**: Scans the specified path for executable files (*.exe, *.dll, *.sys)
+3. **Policy Evaluation**: Tests each discovered file against the policy rules
+4. **Result Collection**: Records whether each file would be allowed or denied
+5. **Report Generation**: Creates an HTML report with detailed results
 
-### File Types Tested
+## Supported File Types
 
 The simulation tests the following file types:
-
-- `.exe` - Executable files
-- `.dll` - Dynamic link libraries
-- `.sys` - System driver files
-- Other executable types as identified by the system
+- **.exe**: Executable files
+- **.dll**: Dynamic Link Libraries
+- **.sys**: System driver files
 
 ## Output
 
 The script generates:
 
-1. **Console Output**: Real-time progress and summary information
-2. **HTML Report**: Detailed analysis of policy simulation results
-3. **Detailed Log**: If enabled, a temporary log file with verbose information
+1. Console output showing the simulation progress and summary
+2. An HTML report with detailed results at the specified output path
+3. Optional detailed logging to a temporary file if `-DetailedLogging` is specified
 
-### Report Contents
+## Report Contents
 
 The HTML report includes:
 
-- **Summary Statistics**: Total files tested, allowed, and denied
-- **Detailed Results**: File-by-file analysis with rule matching
-- **Policy Information**: Details about the policy tested
-- **Test Parameters**: Information about the simulation parameters
+### Executive Summary
+- Total files tested
+- Number of files that would be allowed
+- Number of files that would be denied
+
+### Top Blocked Executables
+- List of executables that would be blocked
+- Block count for each executable
+
+### Top Blocked Paths
+- List of directories with the most blocked files
+- Block count for each path
+
+### Detailed Results
+- File-by-file breakdown of policy decisions
+- Reason for each allow/deny decision
+- Rule that matched for each decision
 
 ## Prerequisites
 
 - PowerShell 5.1 or later
 - Windows 10/11 with WDAC features enabled
 - ConfigCI PowerShell module
-- Read access to the policy file and test directories
+- Administrator privileges (recommended but not required)
 
 ## Performance Considerations
 
 ### Large Directory Scans
-
 When scanning large directories:
-
-- The process may take considerable time
-- Consider using specific subdirectories
+- The simulation may take considerable time
+- Consider using specific subdirectories rather than broad scans
 - Use `-IncludeSubdirectories` judiciously
-- Monitor system resource usage
 
 ### Memory Usage
-
-For large simulations:
-
-- Results are stored in memory during processing
-- Very large simulations may require significant RAM
-- Consider breaking large simulations into smaller chunks
+- The script loads all policy rules into memory
+- Large policies may consume significant memory
+- Results for all tested files are held in memory during processing
 
 ## Best Practices
 
-1. **Test Representative Samples**: Use directories that represent typical system usage
-2. **Compare Audit Logs**: Cross-reference with actual audit mode results
-3. **Iterate and Refine**: Use simulation to fine-tune policies before deployment
-4. **Document Findings**: Keep records of simulation results for policy reviews
-5. **Test Critical Applications**: Focus on business-critical applications first
+1. **Test in Controlled Environments**: Run simulations on test systems that mirror production
+2. **Focus Scans Appropriately**: Target specific directories rather than scanning entire drives
+3. **Review Denied Files**: Carefully examine files that would be denied to ensure they're not legitimate
+4. **Use Audit Mode First**: Deploy policies in audit mode to collect real-world data
+5. **Combine Approaches**: Use both simulation and audit mode for comprehensive testing
+6. **Document Findings**: Keep records of simulation results for policy refinement
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Access Denied**: Ensure read permissions on policy files and test directories
-2. **Invalid Policy**: Verify policy file syntax and structure
-3. **No Files Found**: Check test directory and file type filters
-4. **Performance Issues**: Reduce scope or run during low-usage periods
+1. **Policy loading failures**: Check policy file validity and path
+2. **File access denied**: Run PowerShell as Administrator for better access
+3. **Long execution times**: Narrow the test scope or exclude subdirectories
+4. **Memory issues**: Reduce the number of files being tested simultaneously
 
 ### Diagnostic Information
 
-With detailed logging enabled, the script writes additional information to:
-`$env:TEMP\WDAC_Simulation_Log.txt`
+The script provides detailed logging to help troubleshoot issues:
 
-This log includes:
-- Timestamped entries
-- Detailed file processing information
-- Rule matching details
-- Error conditions
+- Informational messages about the simulation process
+- Warning messages for potential issues
+- Error messages with specific details
+- Progress indicators during file processing
 
-## Integration Examples
+## Security Considerations
 
-### Batch Simulation Script
+### File Access
+The script reads file properties but does not execute files:
+- Uses `Get-FileHash` to calculate file hashes
+- Uses `Get-AuthenticodeSignature` to read certificate information
+- Does not execute or modify any files
 
-```powershell
-# Simulate multiple policies against different directories
-$policies = @("C:\policies\base.xml", "C:\policies\strict.xml")
-$directories = @("C:\Program Files", "C:\Windows")
-
-foreach ($policy in $policies) {
-    foreach ($dir in $directories) {
-        $reportName = "simulation_$(Split-Path $policy -Leaf)_$(Split-Path $dir -Leaf).html"
-        .\simulate-policy.ps1 -PolicyPath $policy -TestPath $dir -OutputReport $reportName
-    }
-}
-```
-
-### Automated Testing Workflow
-
-```powershell
-# Integrate simulation into a testing workflow
-.\simulate-policy.ps1 -PolicyPath "C:\policies\new-policy.xml" -TestPath "C:\TestApplications" -OutputReport "C:\Reports\test-results.html"
-
-# Check results
-$deniedCount = (Select-String -Path "C:\Reports\test-results.html" -Pattern "DENIED").Count
-if ($deniedCount -gt 5) {
-    Write-Warning "Too many files would be denied. Review policy."
-} else {
-    Write-Host "Policy simulation acceptable. Proceeding with deployment testing."
-}
-```
+### Privacy
+The script does not transmit any data:
+- All processing occurs locally
+- Reports are saved locally
+- No network communication is initiated
 
 ## Related Tools
 
-- [generate-policy-from-template.ps1](generate-policy-from-template.md) - Generate policies from templates
 - [test-xml-validity.ps1](test-xml-validity.md) - Validate policy syntax
 - [deploy-policy.ps1](deploy-policy.md) - Deploy policies to systems
-- [generate-compliance-report.ps1](generate-compliance-report.md) - Analyze audit logs
+- [generate-compliance-report.ps1](generate-compliance-report.md) - Generate compliance reports from audit logs
 
 ## See Also
 
-- [WDAC Policy Testing Documentation](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/test-windows-defender-application-control-policies)
-- [PowerShell File System Cmdlets](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/?view=powershell-7.3#filesystem)
+- [WDAC Documentation](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/)
+- [PowerShell Documentation](https://learn.microsoft.com/en-us/powershell/)

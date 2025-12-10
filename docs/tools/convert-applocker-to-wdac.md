@@ -33,28 +33,24 @@ Validates the converted WDAC policy for syntax and structural correctness.
 ## Usage Examples
 
 ### Basic Conversion
-
 ```powershell
 # Convert an AppLocker policy to WDAC
 .\convert-applocker-to-wdac.ps1 -AppLockerPolicyPath "C:\applocker\policy.xml"
 ```
 
 ### Convert with Custom Output Path
-
 ```powershell
 # Convert with custom output path
 .\convert-applocker-to-wdac.ps1 -AppLockerPolicyPath "C:\applocker\policy.xml" -OutputPath "C:\wdac\converted-policy.xml"
 ```
 
 ### Convert and Validate
-
 ```powershell
 # Convert and validate the resulting policy
 .\convert-applocker-to-wdac.ps1 -AppLockerPolicyPath "C:\applocker\policy.xml" -Validate
 ```
 
 ### Convert and Create Binary Version
-
 ```powershell
 # Convert and create binary version
 .\convert-applocker-to-wdac.ps1 -AppLockerPolicyPath "C:\applocker\policy.xml" -ConvertToBinary
@@ -146,35 +142,30 @@ The script provides detailed logging to help troubleshoot issues:
 ## Migration Workflow
 
 ### Step 1: Prepare AppLocker Policies
-
 ```powershell
 # Export existing AppLocker policies
 Get-AppLockerPolicy -Effective -Xml > "C:\applocker\effective-policy.xml"
 ```
 
 ### Step 2: Convert Policies
-
 ```powershell
 # Convert the policy
 .\convert-applocker-to-wdac.ps1 -AppLockerPolicyPath "C:\applocker\effective-policy.xml" -OutputPath "C:\wdac\converted-policy.xml" -Validate
 ```
 
 ### Step 3: Review and Adjust
-
 - Compare original and converted policies
 - Adjust certificate information as needed
 - Fine-tune path rules
 - Add additional security rules
 
 ### Step 4: Test Converted Policies
-
 ```powershell
 # Deploy in audit mode for testing
 .\deploy-policy.ps1 -PolicyPath "C:\wdac\converted-policy.xml" -Mode Audit -Deploy
 ```
 
 ### Step 5: Deploy in Enforce Mode
-
 ```powershell
 # Deploy in enforce mode after validation
 .\deploy-policy.ps1 -PolicyPath "C:\wdac\converted-policy.xml" -Mode Enforce -Deploy

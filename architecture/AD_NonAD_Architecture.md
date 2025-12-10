@@ -1,10 +1,10 @@
 # WDAC Architecture for Active Directory and Non-AD Environments
 
-This document provides detailed architectural guidance for implementing Windows Defender Application Control (WDAC) in both Active Directory and non-Active Directory environments, including deployment patterns, integration points, and management considerations.
+This document provides detailed architectural guidance for implementing Windows Defender Application Control (WDAC) in both Active Directory and non-Active Directory environments, including deployment patterns, integration points, and management considerations with enhancements from the WDAC Policy Toolkit.
 
 ## Architecture Overview
 
-Windows Defender Application Control operates at the kernel level to enforce application execution policies. The architecture differs significantly between Active Directory and non-AD environments, primarily in policy distribution, management, and monitoring approaches.
+Windows Defender Application Control operates at the kernel level to enforce application execution policies. The architecture differs significantly between Active Directory and non-AD environments, primarily in policy distribution, management, and monitoring approaches. The WDAC Policy Toolkit enhances these architectures with additional management capabilities.
 
 ## Active Directory Environment Architecture
 
@@ -15,6 +15,7 @@ Windows Defender Application Control operates at the kernel level to enforce app
 - **Group Policy Management Console**: Administrative interface for policy management
 - **SYSVOL/DFS Replication**: Policy file distribution mechanism
 - **Active Directory**: Policy storage and replication
+- **WDAC Policy Toolkit**: Enhanced policy creation and management capabilities
 
 #### 2. Policy Distribution Layer
 - **Domain Controllers**: Host and replicate policy files
@@ -33,6 +34,7 @@ Windows Defender Application Control operates at the kernel level to enforce app
 - **Event Forwarding**: Centralized log collection
 - **SIEM Integration**: Security information and event management
 - **Reporting Tools**: Compliance and audit reporting
+- **WDAC Policy Toolkit**: Enhanced reporting and compliance capabilities
 
 ### Data Flow Architecture
 
@@ -79,6 +81,18 @@ graph TB
         N
         O
     end
+    
+    subgraph "WDAC Policy Toolkit Integration"
+        P[CLI Tools]
+        Q[Policy Templates]
+        R[Validation Tools]
+        S[Testing Framework]
+        
+        A --> P
+        A --> Q
+        A --> R
+        A --> S
+    end
 ```
 
 ### Integration Points
@@ -110,6 +124,7 @@ graph TB
 - **Cloud Management**: Microsoft Intune, Configuration Manager
 - **Script-Based Management**: PowerShell, Ansible, Puppet
 - **Manual Administration**: Direct system management
+- **WDAC Policy Toolkit**: Simplified policy creation and management
 
 #### 2. Policy Distribution Layer
 - **Cloud Services**: Azure, Intune endpoints
@@ -128,6 +143,7 @@ graph TB
 - **Cloud-Based Monitoring**: Intune reporting, Azure Monitor
 - **Agent-Based Collection**: Third-party monitoring tools
 - **Manual Reporting**: Periodic compliance checks
+- **WDAC Policy Toolkit**: Enhanced reporting capabilities
 
 ### Data Flow Architecture
 
@@ -186,6 +202,18 @@ graph TB
         Q
         R
     end
+    
+    subgraph "WDAC Policy Toolkit Integration"
+        S[CLI Tools]
+        T[Policy Templates]
+        U[Validation Tools]
+        V[Testing Framework]
+        
+        A --> S
+        A --> T
+        A --> U
+        A --> V
+    end
 ```
 
 ### Integration Points
@@ -217,6 +245,7 @@ graph TB
 - **Cloud Management**: Azure AD, Microsoft Intune
 - **Co-Management**: Integrated management approach
 - **Policy Orchestration**: Coordination between management tools
+- **WDAC Policy Toolkit**: Unified policy management capabilities
 
 #### 2. Unified Distribution Layer
 - **Hybrid Identity**: Azure AD Connect
@@ -235,6 +264,7 @@ graph TB
 - **Cross-Platform Monitoring**: Holistic visibility
 - **Advanced Analytics**: Machine learning-based detection
 - **Compliance Reporting**: Multi-environment reporting
+- **WDAC Policy Toolkit**: Enhanced analytics and reporting
 
 ### Data Flow Architecture
 
@@ -299,6 +329,20 @@ graph TB
         R
         S
         T
+    end
+    
+    subgraph "WDAC Policy Toolkit Integration"
+        U[CLI Tools]
+        V[GUI Wizard]
+        W[Policy Templates]
+        X[Validation Tools]
+        Y[Testing Framework]
+        
+        A --> U
+        A --> V
+        A --> W
+        A --> X
+        A --> Y
     end
 ```
 
@@ -432,4 +476,4 @@ graph TB
 - **Security Updates**: Continuous improvement
 - **Compliance Audits**: Regular verification
 
-This architectural guidance provides a comprehensive framework for implementing WDAC in various environments, ensuring security, scalability, and manageability across different organizational structures.
+This architectural guidance provides a comprehensive framework for implementing WDAC in various environments, ensuring security, scalability, and manageability across different organizational structures with enhancements from the WDAC Policy Toolkit.

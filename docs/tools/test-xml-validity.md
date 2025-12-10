@@ -4,7 +4,7 @@ This tool validates WDAC policy XML files for syntax and structure.
 
 ## Overview
 
-The `test-xml-validity.ps1` script performs comprehensive validation of WDAC policy XML files to ensure they conform to the required structure and contain all necessary elements. It can also automatically fix common policy issues.
+The `test-xml-validity.ps1` script performs comprehensive validation of WDAC policy XML files to ensure they conform to the required schema and structure. This helps identify syntax errors, missing elements, and other issues before deployment.
 
 ## Syntax
 
@@ -19,7 +19,7 @@ test-xml-validity.ps1
 ## Parameters
 
 ### -PolicyPath
-Specifies the path to the WDAC policy XML file to validate. This parameter is mandatory.
+Specifies the path to the policy file to validate. This parameter is mandatory.
 
 ### -DetailedLogging
 Enables detailed logging to a temporary file for troubleshooting.
@@ -28,149 +28,171 @@ Enables detailed logging to a temporary file for troubleshooting.
 Attempts to automatically fix common policy issues.
 
 ### -OutputPath
-Specifies the path where the fixed policy should be saved when using the `-FixIssues` parameter.
+Specifies the path where the fixed policy will be saved when using `-FixIssues`.
 
 ## Usage Examples
 
 ### Basic Policy Validation
-
 ```powershell
 # Validate a policy file
 .\test-xml-validity.ps1 -PolicyPath "C:\policies\my-policy.xml"
 ```
 
-### Validate with Detailed Logging
-
+### Detailed Logging
 ```powershell
-# Validate with detailed logging
+# Enable detailed logging for troubleshooting
 .\test-xml-validity.ps1 -PolicyPath "C:\policies\my-policy.xml" -DetailedLogging
 ```
 
-### Validate and Fix Issues
-
+### Fix Common Issues
 ```powershell
-# Validate and fix common issues
+# Attempt to fix common policy issues
 .\test-xml-validity.ps1 -PolicyPath "C:\policies\my-policy.xml" -FixIssues -OutputPath "C:\policies\fixed-policy.xml"
 ```
 
-## Validation Checks
+## Validation Process
 
 The script performs the following validation checks:
 
-### XML Structure
-- Valid XML syntax
-- Presence of root Policy element
-- Correct namespace declaration
+### XML Structure Validation
+- Verifies the file is valid XML
+- Checks for proper XML syntax and formatting
+- Ensures the root Policy element exists
 
-### Required Elements
-- VersionEx element
-- Rules element with proper structure
-- FileRules element
-- SigningScenarios element
-- PolicyType attribute
+### Required Element Checks
+- **VersionEx**: Policy version information
+- **Rules**: Policy rules container
+- **FileRules**: File-based rules container
+- **SigningScenarios**: Signing scenario definitions
 
-### Policy-Type Specific Checks
-- Base policies: PlatformID presence
-- Supplemental policies: BasePolicyID presence
-- Invalid elements for policy type
+### Policy Type Validation
+- **Base Policy**: Checks for PlatformID requirement
+- **Supplemental Policy**: Checks for BasePolicyID requirement
 
-### Rule Validation
-- Valid rule options
-- Proper rule structure
-- No conflicting rules
-
-### Common Issues Fixed
-When using the `-FixIssues` parameter, the script can automatically fix:
-
+### Common Issue Detection
 - Missing VersionEx element
 - Missing PlatformID in Base policies
 - Incorrect BasePolicyID in Base policies
 - Missing Rules element
 - Invalid rule options
 
+## Automatic Fixes
+
+When using the `-FixIssues` parameter, the script can automatically fix:
+
+### Missing Elements
+- **VersionEx**: Adds default version "1.0.0.0"
+- **PlatformID**: Adds default placeholder GUID for Base policies
+- **Rules**: Creates empty Rules element
+- **FileRules**: Creates empty FileRules element
+- **SigningScenarios**: Creates empty SigningScenarios element
+
+### Policy Type Corrections
+- **Base Policy**: Removes incorrect BasePolicyID elements
+- **Supplemental Policy**: Adds BasePolicyID placeholder (requires manual update)
+
 ## Output
 
-The script provides detailed console output including:
+The script provides:
 
-- Validation progress information
-- Success messages for passing checks
-- Warning messages for potential issues
-- Error messages for failing checks
-- Summary of validation results
+1. Console output showing validation results
+2. Exit codes indicating success (0) or failure (1)
+3. Optional detailed logging to a temporary file
+4. Fixed policy file when using `-FixIssues`
 
-### Exit Codes
-- `0`: Policy is valid
-- `1`: Policy has validation errors
-- `2`: Script execution error
+## Exit Codes
+
+- **0**: Policy is valid or issues were successfully fixed
+- **1**: Policy validation failed or an error occurred
 
 ## Prerequisites
 
 - PowerShell 5.1 or later
 - Windows 10/11 with WDAC features enabled
 - ConfigCI PowerShell module
-- Administrator privileges (for some operations)
+- Administrator privileges (recommended but not required)
+
+## Supported Policy Types
+
+The script validates the following policy types:
+
+### Base Policy
+- Requires PlatformID element
+- Should not have BasePolicyID element
+- Supports all base policy features
+
+### Supplemental Policy
+- Requires BasePolicyID element
+- Extends an existing base policy
+- Cannot exist independently
+
+## Common Validation Issues
+
+### Missing Required Elements
+- **VersionEx**: Essential for policy versioning
+- **PlatformID**: Required for Base policies
+- **Rules**: Container for policy rules
+- **FileRules**: Container for file-based rules
+
+### Policy Type Issues
+- **Base Policy with BasePolicyID**: Incorrect structure
+- **Supplemental Policy without BasePolicyID**: Missing reference
+- **Invalid PolicyType value**: Unsupported policy type
+
+### Rule Validation
+- **Invalid rule options**: Unsupported or misspelled options
+- **Missing rule elements**: Incomplete rule definitions
+- **Conflicting rules**: Potentially problematic rule combinations
 
 ## Best Practices
 
-1. **Always validate policies** before deployment
-2. **Use detailed logging** when troubleshooting validation failures
-3. **Review fixed policies** before deployment
-4. **Integrate validation** into your CI/CD pipeline
-5. **Document validation results** for audit purposes
+1. **Validate Before Deployment**: Always validate policies before deployment
+2. **Use Automated Fixes Carefully**: Review auto-fixed policies before deployment
+3. **Maintain Version Control**: Track policy changes in version control systems
+4. **Document Validation Results**: Keep records of validation outcomes
+5. **Regular Validation**: Validate policies regularly as part of maintenance
+6. **Team Validation**: Have multiple team members validate critical policies
 
 ## Troubleshooting
 
 ### Common Issues
 
 1. **XML parsing errors**: Check for malformed XML syntax
-2. **Missing elements**: Ensure all required elements are present
-3. **Invalid policy type**: Verify PolicyType attribute value
-4. **Certificate issues**: Check certificate references and values
+2. **Missing elements**: Add required elements as indicated
+3. **Policy type mismatches**: Correct policy type-specific requirements
+4. **Invalid rule options**: Refer to WDAC documentation for valid options
 
 ### Diagnostic Information
 
-With detailed logging enabled, the script writes additional information to:
-`$env:TEMP\WDAC_XML_Test_Log.txt`
+The script provides detailed logging to help troubleshoot issues:
 
-This log includes:
-- Timestamped entries
-- Detailed validation steps
-- Raw error messages
-- Processing information
+- Informational messages about the validation process
+- Warning messages for potential issues
+- Error messages with specific details
+- Line numbers for XML parsing errors
 
-## Integration Examples
+## Security Considerations
 
-### Batch Validation Script
+### File Access
+The script reads policy files but does not modify them (unless using `-FixIssues`):
+- Requires read access to policy files
+- Does not execute or modify files by default
+- Fixed policies are saved to new files
 
-```powershell
-# Validate all policies in a directory
-Get-ChildItem -Path "C:\policies" -Filter "*.xml" | ForEach-Object {
-    Write-Host "Validating $($_.Name)"
-    .\test-xml-validity.ps1 -PolicyPath $_.FullName
-}
-```
-
-### CI/CD Pipeline Integration
-
-```yaml
-# Example GitHub Actions workflow step
-- name: Validate WDAC Policies
-  run: |
-    Get-ChildItem -Path policies -Filter "*.xml" | ForEach-Object {
-      .\tools\test-xml-validity.ps1 -PolicyPath $_.FullName
-      if ($LASTEXITCODE -ne 0) {
-        throw "Policy validation failed for $($_.Name)"
-      }
-    }
-```
+### Data Privacy
+The script handles policy configuration data:
+- Policy files contain security configuration information
+- Detailed logs may contain sensitive data
+- Store validation results securely
 
 ## Related Tools
 
-- [generate-policy-from-template.ps1](generate-policy-from-template.md) - Generate policies from templates
-- [merge_policies.ps1](merge_policies.md) - Combine multiple policies
 - [deploy-policy.ps1](deploy-policy.md) - Deploy policies to systems
+- [merge_policies.ps1](merge_policies.md) - Combine multiple policies
+- [generate-policy-from-template.ps1](generate-policy-from-template.md) - Generate policies from templates
 
 ## See Also
 
-- [WDAC Policy Structure Documentation](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/wdac-policy-schema)
-- [PowerShell XML Processing](https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-xml)
+- [WDAC Policy Schema Documentation](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/wdac-wizard)
+- [PowerShell XML Processing](https://learn.microsoft.com/en-us/powershell/scripting/developer/help/writing-help-for-windows-powershell-cmdlets)
+- [WDAC Policy Structure](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/understand-windows-defender-application-control-policy-design)
