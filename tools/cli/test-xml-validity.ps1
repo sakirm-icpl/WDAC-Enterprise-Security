@@ -6,7 +6,13 @@ param(
     [string]$PolicyPath,
     
     [Parameter(Mandatory=$false)]
-    [switch]$DetailedLogging
+    [switch]$DetailedLogging,
+    
+    [Parameter(Mandatory=$false)]
+    [switch]$FixIssues,
+    
+    [Parameter(Mandatory=$false)]
+    [string]$OutputPath
 )
 
 function Write-Log {
@@ -30,8 +36,71 @@ function Write-Log {
     }
 }
 
+function Test-PowerShellVersionCompatibility {
+    # Check PowerShell version
+    $PSVersion = $PSVersionTable.PSVersion
+    if ($PSVersion.Major -lt 5) {
+        throw "PowerShell 5.0 or higher is required. Current version: $PSVersion"
+    }
+    
+    # Check if required modules are available
+    try {
+        Import-Module ConfigCI -ErrorAction Stop
+        return $true
+    } catch {
+        throw "ConfigCI module not available. This module is required for WDAC policy management."
+    }
+}
+
+function Fix-PolicyIssues {
+    param(
+        [xml]$Policy,
+        [string]$PolicyType
+    )
+    
+    Write-Log "Attempting to fix common policy issues..." "INFO"
+    
+    # Fix missing VersionEx
+    if (-not $Policy.Policy.VersionEx) {
+        $VersionEx = $Policy.Policy.AppendChild($Policy.CreateElement("VersionEx"))
+        $VersionEx.InnerText = "1.0.0.0"
+        Write-Log "Added missing VersionEx element" "SUCCESS"
+    }
+    
+    # Fix missing PlatformID for Base policies
+    if ($PolicyType -eq "Base Policy" -and -not $Policy.Policy.PlatformID) {
+        $PlatformID = $Policy.Policy.AppendChild($Policy.CreateElement("PlatformID"))
+        $PlatformID.InnerText = "{11111111-1111-1111-1111-111111111111}"
+        Write-Log "Added missing PlatformID element (please customize this GUID)" "WARN"
+    }
+    
+    # Fix BasePolicyID in Base policies
+    if ($PolicyType -eq "Base Policy" -and $Policy.Policy.BasePolicyID) {
+        $Policy.Policy.RemoveChild($Policy.Policy.BasePolicyID) | Out-Null
+        Write-Log "Removed incorrect BasePolicyID from Base policy" "SUCCESS"
+    }
+    
+    # Add required rules if missing
+    if (-not $Policy.Policy.Rules) {
+        $Rules = $Policy.Policy.AppendChild($Policy.CreateElement("Rules"))
+        Write-Log "Added missing Rules element" "SUCCESS"
+    }
+    
+    return $Policy
+}
+
 Write-Log "Starting WDAC Policy XML Validity Test" "INFO"
 Write-Log "Policy file: $PolicyPath" "INFO"
+
+# Check prerequisites
+try {
+    Write-Log "Checking PowerShell version compatibility..." "INFO"
+    Test-PowerShellVersionCompatibility | Out-Null
+    Write-Log "PowerShell version compatibility check passed" "SUCCESS"
+} catch {
+    Write-Log "PowerShell compatibility check failed: $($_.Exception.Message)" "ERROR"
+    exit 1
+}
 
 # Check if policy file exists
 if (-not (Test-Path $PolicyPath)) {
@@ -57,7 +126,7 @@ try {
     
     # Check required elements
     Write-Log "Checking required elements..." "INFO"
-    $RequiredElements = @("VersionEx", "PlatformID", "Rules", "FileRules", "SigningScenarios")
+    $RequiredElements = @("VersionEx", "Rules", "FileRules", "SigningScenarios")
     $MissingElements = @()
     
     foreach ($Element in $RequiredElements) {
@@ -75,6 +144,18 @@ try {
         Write-Log "Policy Type: $PolicyType" "SUCCESS"
     } else {
         Write-Log "Policy Type not specified" "WARN"
+        $PolicyType = "Unknown"
+    }
+    
+    # Check PlatformID for Base policies
+    if ($PolicyType -eq "Base Policy" -and -not $Policy.Policy.PlatformID) {
+        Write-Log "PlatformID missing in Base Policy" "ERROR"
+        $MissingElements += "PlatformID"
+    }
+    
+    # Check BasePolicyID for Supplemental policies
+    if ($PolicyType -eq "Supplemental Policy" -and -not $Policy.Policy.BasePolicyID) {
+        Write-Log "BasePolicyID missing in Supplemental Policy" "WARN"
     }
     
     # Count rules
@@ -139,10 +220,39 @@ try {
     
     if ($MissingElements.Count -eq 0) {
         Write-Log "✅ Policy XML is valid and ready for deployment" "SUCCESS"
+        
+        # Fix issues if requested
+        if ($FixIssues) {
+            $Policy = Fix-PolicyIssues -Policy $Policy -PolicyType $PolicyType
+            
+            # Save fixed policy
+            if ($OutputPath) {
+                $Policy.Save($OutputPath)
+                Write-Log "Fixed policy saved to: $OutputPath" "SUCCESS"
+            } else {
+                Write-Log "Use -OutputPath parameter to save the fixed policy" "INFO"
+            }
+        }
+        
         exit 0
     } else {
         Write-Log "❌ Policy XML has missing required elements" "ERROR"
         Write-Log "Missing elements: $($MissingElements -join ', ')" "ERROR"
+        
+        # Try to fix issues if requested
+        if ($FixIssues) {
+            $Policy = Fix-PolicyIssues -Policy $Policy -PolicyType $PolicyType
+            
+            # Save fixed policy
+            if ($OutputPath) {
+                $Policy.Save($OutputPath)
+                Write-Log "Fixed policy saved to: $OutputPath" "SUCCESS"
+                Write-Log "Please review the fixed policy before deployment" "WARN"
+            } else {
+                Write-Log "Use -OutputPath parameter to save the fixed policy" "INFO"
+            }
+        }
+        
         exit 1
     }
     

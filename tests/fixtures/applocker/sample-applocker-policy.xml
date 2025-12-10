@@ -1,0 +1,31 @@
+<AppLockerPolicy Version="1">
+  <RuleCollection Type="Exe" EnforcementMode="AuditOnly">
+    <FilePathRule Id="fd68235f-a2c1-4d7e-b3d6-9f8bbf3b1a5c" Name="Allow Program Files" Description="Allows executable files in the Program Files folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+      <Conditions>
+        <FilePathCondition Path="%PROGRAMFILES%\*" />
+      </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="02e3f0d8-9e6d-4a3b-8c4d-5f1e2b6c8d9a" Name="Allow Windows Folder" Description="Allows executable files in the Windows folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+      <Conditions>
+        <FilePathCondition Path="%WINDIR%\*" />
+      </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d" Name="(Default Rule) Deny All" Description="Denies all executable files." UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="*" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Dll" EnforcementMode="AuditOnly">
+    <FilePathRule Id="a1b2c3d4-e5f6-7890-abcd-ef1234567890" Name="Allow DLLs in Program Files" Description="Allows DLL files in the Program Files folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+      <Conditions>
+        <FilePathCondition Path="%PROGRAMFILES%\*" />
+      </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="f0e9d8c7-b6a5-4321-fedc-ba9876543210" Name="(Default Rule) Deny All DLLs" Description="Denies all DLL files." UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="*" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+</AppLockerPolicy>

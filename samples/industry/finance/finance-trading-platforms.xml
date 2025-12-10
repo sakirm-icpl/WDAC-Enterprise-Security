@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <BasePolicyID>{12345678-1234-1234-1234-123456789012}</BasePolicyID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Audit Mode</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules-->
+  <FileRules>
+    <!--Allow Trading Platforms-->
+    <Allow ID="ID_ALLOW_TRADING_BLOOMBERG" FriendlyName="Allow Bloomberg Terminal" FileName="*" FilePath="%PROGRAMFILES%\Bloomberg\*" />
+    <Allow ID="ID_ALLOW_TRADING_REFINITIV" FriendlyName="Allow Refinitiv Eikon" FileName="*" FilePath="%PROGRAMFILES%\Refinitiv\*" />
+    <Allow ID="ID_ALLOW_TRADING_THINKORSWIM" FriendlyName="Allow Thinkorswim" FileName="*" FilePath="%PROGRAMFILES%\Thinkorswim\*" />
+    <Allow ID="ID_ALLOW_TRADING_INTERACTIVE_BROKERS" FriendlyName="Allow Interactive Brokers" FileName="*" FilePath="%PROGRAMFILES%\IBKR\*" />
+    
+    <!--Allow Financial Analysis Tools-->
+    <Allow ID="ID_ALLOW_FINANCE_ANALYSIS_MATLAB" FriendlyName="Allow MATLAB for Financial Analysis" FileName="*" FilePath="%PROGRAMFILES%\MATLAB\*" />
+    <Allow ID="ID_ALLOW_FINANCE_ANALYSIS_R" FriendlyName="Allow R for Financial Analysis" FileName="*" FilePath="%PROGRAMFILES%\R\*" />
+    <Allow ID="ID_ALLOW_FINANCE_ANALYSIS_PYTHON" FriendlyName="Allow Python for Financial Analysis" FileName="*" FilePath="%PROGRAMFILES%\Python*\*" />
+    
+    <!--Allow Risk Management Software-->
+    <Allow ID="ID_ALLOW_RISK_MANAGEMENT" FriendlyName="Allow Risk Management Software" FileName="*" FilePath="%PROGRAMFILES%\RiskManagement\*" />
+    
+    <!--Allow Financial Data Providers-->
+    <Allow ID="ID_ALLOW_DATA_PROVIDERS" FriendlyName="Allow Financial Data Provider Software" FileName="*" FilePath="%PROGRAMFILES%\FinancialData\*" />
+  </FileRules>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_FINANCE_DRIVERS" FriendlyName="Finance Trading Platforms Driver Scenario">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_BLOOMBERG" />
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_REFINITIV" />
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_THINKORSWIM" />
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_INTERACTIVE_BROKERS" />
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_ANALYSIS_MATLAB" />
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_ANALYSIS_R" />
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_ANALYSIS_PYTHON" />
+          <FileRuleRef RuleID="ID_ALLOW_RISK_MANAGEMENT" />
+          <FileRuleRef RuleID="ID_ALLOW_DATA_PROVIDERS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_FINANCE_WINDOWS" FriendlyName="Finance Trading Platforms Windows Scenario">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_BLOOMBERG" />
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_REFINITIV" />
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_THINKORSWIM" />
+          <FileRuleRef RuleID="ID_ALLOW_TRADING_INTERACTIVE_BROKERS" />
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_ANALYSIS_MATLAB" />
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_ANALYSIS_R" />
+          <FileRuleRef RuleID="ID_ALLOW_FINANCE_ANALYSIS_PYTHON" />
+          <FileRuleRef RuleID="ID_ALLOW_RISK_MANAGEMENT" />
+          <FileRuleRef RuleID="ID_ALLOW_DATA_PROVIDERS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+  <UpdatePolicySigners>
+  </UpdatePolicySigners>
+  <HvciOptions>0</HvciOptions>
+</Policy>

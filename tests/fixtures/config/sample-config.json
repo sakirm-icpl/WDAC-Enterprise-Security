@@ -1,0 +1,20 @@
+{
+  "organization": {
+    "name": "Sample Organization",
+    "platformId": "{11111111-2222-3333-4444-555555555555}",
+    "policyVersion": "1.0.0.0"
+  },
+  "certificates": {
+    "windowsStoreEKU": "0x010361636269746563682e636f6d",
+    "microsoftProductSigning": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    "microsoftCodeSigningPCA2011": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+  },
+  "paths": {
+    "programFiles": "%PROGRAMFILES%",
+    "programFilesX86": "%PROGRAMFILES(X86)%",
+    "windowsFolder": "%WINDIR%",
+    "downloads": "%USERPROFILE%\\Downloads",
+    "temp": "%TEMP%",
+    "public": "%PUBLIC%"
+  }
+}

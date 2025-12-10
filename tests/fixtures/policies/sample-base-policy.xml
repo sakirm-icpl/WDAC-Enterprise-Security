@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Base Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <PlatformID>{12345678-1234-1234-1234-123456789012}</PlatformID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Audit Mode</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Advanced Boot Options Menu</Option>
+    </Rule>
+    <Rule>
+      <Option>Required:Enforce Store Applications</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:UMCI</Option>
+    </Rule>
+  </Rules>
+  <!--EKUS-->
+  <EKUs>
+    <Eku Id="ID_EKU_STORE" Value="0x010361636269746563682e636f6d" FriendlyName="Windows Store EKU - 1.3.6.1.4.1.311.76.3.1 Windows Store" />
+  </EKUs>
+  <!--File Rules-->
+  <FileRules>
+    <!--Allow Windows Publisher-->
+    <Allow ID="ID_ALLOW_WINDOWS_PUBLISHER_1" FriendlyName="Allow Windows Publisher - Microsoft Corporation" FileName="*" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_WINDOWS_PUBLISHER_1">
+        <CertRoot Type="TBS" Value="0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20" />
+        <CertEKU ID="ID_EKU_STORE" />
+      </Signer>
+    </Allow>
+    <!--Allow applications in Program Files-->
+    <Allow ID="ID_ALLOW_PROGRAM_FILES" FriendlyName="Allow Program Files" FileName="*" FilePath="%PROGRAMFILES%\*" />
+    <Allow ID="ID_ALLOW_PROGRAM_FILES_X86" FriendlyName="Allow Program Files x86" FileName="*" FilePath="%PROGRAMFILES(X86)%\*" />
+    <!--Allow Windows folder-->
+    <Allow ID="ID_ALLOW_WINDOWS_FOLDER" FriendlyName="Allow Windows Folder" FileName="*" FilePath="%WINDIR%\*" />
+    <!--Deny executables in user downloads folder-->
+    <Deny ID="ID_DENY_DOWNLOADS_FOLDER" FriendlyName="Deny Downloads Folder Executables" FileName="*" FilePath="%USERPROFILE%\Downloads\*" />
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Windows Store" ID="ID_SIGNER_WINDOWS_PUBLISHER_1">
+      <CertRoot Type="TBS" Value="0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20" />
+      <CertEKU ID="ID_EKU_STORE" />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 01-01-2023">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_DOWNLOADS_FOLDER" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_WINDOWS_PUBLISHER_1" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_DOWNLOADS_FOLDER" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+  <UpdatePolicySigners>
+  </UpdatePolicySigners>
+  <CiSigners>
+    <CiSigner SignerId="ID_SIGNER_WINDOWS_PUBLISHER_1" />
+  </CiSigners>
+  <HvciOptions>0</HvciOptions>
+</Policy>
