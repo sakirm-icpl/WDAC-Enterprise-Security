@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <BasePolicyID>{A1B2C3D4-E5F6-7890-GHIJ-KLMNOPQRSTUV}</BasePolicyID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules - HR Department Applications-->
+  <FileRules>
+    <!--Allow HR management system-->
+    <Allow ID="ID_ALLOW_HR_SYSTEM" FriendlyName="HR Management System" FileName="hrsystem.exe" FilePath="%PROGRAMFILES%\HRSoftware\*" />
+    
+    <!--Allow payroll processing software-->
+    <Allow ID="ID_ALLOW_PAYROLL" FriendlyName="Payroll Processing" FileName="payroll.exe" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_PAYROLL">
+        <CertRoot Type="TBS" Value="D1E2F3A4B5C6D7E8F9A0B1C2D3E4F5A6B7C8D9E0F1A2B3C4D5E6F7A8B9C0D1E2" />
+        <CertPublisher Value="Payroll Solutions Inc." />
+      </Signer>
+    </Allow>
+    
+    <!--Allow background check tools-->
+    <Allow ID="ID_ALLOW_BACKGROUND_CHECK" FriendlyName="Background Check Tool" FileName="bgcheck.exe" FilePath="%PROGRAMFILES%\BackgroundCheck\*" />
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Payroll Solutions Inc." ID="ID_SIGNER_PAYROLL">
+      <CertRoot Type="TBS" Value="D1E2F3A4B5C6D7E8F9A0B1C2D3E4F5A6B7C8D9E0F1A2B3C4D5E6F7A8B9C0D1E2" />
+      <CertPublisher Value="Payroll Solutions Inc." />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_HR_SYSTEM" />
+          <FileRuleRef RuleID="ID_ALLOW_BACKGROUND_CHECK" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_PAYROLL" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_HR_SYSTEM" />
+          <FileRuleRef RuleID="ID_ALLOW_BACKGROUND_CHECK" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+</Policy>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Base Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <PlatformID>{HYBRID-PLATFORM-ID-HERE}</PlatformID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Enforce Mode</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Advanced Boot Options Menu</Option>
+    </Rule>
+    <Rule>
+      <Option>Required:Enforce Store Applications</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:UMCI</Option>
+    </Rule>
+    <Rule>
+      <Option>Enabled:Inherit Default Policy</Option>
+    </Rule>
+  </Rules>
+  <!--EKUS-->
+  <EKUs>
+    <Eku Id="ID_EKU_STORE" Value="010A2B0601040182370A0301" FriendlyName="Windows Store EKU - 1.3.6.1.4.1.311.76.3.1 Windows Store" />
+  </EKUs>
+  <!--File Rules-->
+  <FileRules>
+    <!--Allow Windows Publisher-->
+    <Allow ID="ID_ALLOW_WINDOWS_PUBLISHER_1" FriendlyName="Allow Windows Publisher - Microsoft Corporation" FileName="*" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_WINDOWS_PUBLISHER_1">
+        <CertRoot Type="TBS" Value="32C499C5E5E46CB3B7A2B923806F3E2F4715B58898C64FF1ED1183F4070BF887" />
+        <CertEKU ID="ID_EKU_STORE" />
+      </Signer>
+    </Allow>
+    <!--Allow Microsoft Product Signing-->
+    <Allow ID="ID_ALLOW_MS_PRODUCT_SIGNING" FriendlyName="Allow Microsoft Product Signing" FileName="*" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_MS_PRODUCT_SIGNING">
+        <CertRoot Type="TBS" Value="F6F74D185A25E4928881FC0DB33C9FB7F57956D51661DD8063F7F700BA8A548B" />
+      </Signer>
+    </Allow>
+    <!--Allow Microsoft Code Signing PCA 2011-->
+    <Allow ID="ID_ALLOW_MICROSOFT_CODE_SIGNING" FriendlyName="Allow Microsoft Code Signing PCA 2011" FileName="*" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_MICROSOFT_CODE_SIGNING">
+        <CertRoot Type="TBS" Value="AE9C1AE54763822EEC48CC4D8B154558570E247F4039714C204530831517894C" />
+      </Signer>
+    </Allow>
+    <!--Allow applications in Program Files-->
+    <Allow ID="ID_ALLOW_PROGRAM_FILES" FriendlyName="Allow Program Files" FileName="*" FilePath="%PROGRAMFILES%\*" />
+    <Allow ID="ID_ALLOW_PROGRAM_FILES_X86" FriendlyName="Allow Program Files x86" FileName="*" FilePath="%PROGRAMFILES(X86)%\*" />
+    <!--Allow Windows folder-->
+    <Allow ID="ID_ALLOW_WINDOWS_FOLDER" FriendlyName="Allow Windows Folder" FileName="*" FilePath="%WINDIR%\*" />
+    <!--Deny executables in user downloads folder-->
+    <Deny ID="ID_DENY_DOWNLOADS_FOLDER" FriendlyName="Deny Downloads Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\*\Downloads\*" />
+    <!--Deny executables in user temp folder-->
+    <Deny ID="ID_DENY_TEMP_FOLDER" FriendlyName="Deny Temp Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\*\AppData\Local\Temp\*" />
+    <!--Deny executables in public folders-->
+    <Deny ID="ID_DENY_PUBLIC_FOLDERS" FriendlyName="Deny Public Folder Executables" FileName="*" FilePath="%OSDRIVE%\Users\Public\*" />
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Microsoft Product Signing" ID="ID_SIGNER_MS_PRODUCT_SIGNING">
+      <CertRoot Type="TBS" Value="F6F74D185A25E4928881FC0DB33C9FB7F57956D51661DD8063F7F700BA8A548B" />
+    </Signer>
+    <Signer Name="Microsoft Code Signing PCA 2011" ID="ID_SIGNER_MICROSOFT_CODE_SIGNING">
+      <CertRoot Type="TBS" Value="AE9C1AE54763822EEC48CC4D8B154558570E247F4039714C204530831517894C" />
+    </Signer>
+    <Signer Name="Windows Store" ID="ID_SIGNER_WINDOWS_PUBLISHER_1">
+      <CertRoot Type="TBS" Value="32C499C5E5E46CB3B7A2B923806F3E2F4715B58898C64FF1ED1183F4070BF887" />
+      <CertEKU ID="ID_EKU_STORE" />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_MS_PRODUCT_SIGNING" />
+          <AllowedSigner SignerId="ID_SIGNER_MICROSOFT_CODE_SIGNING" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_DOWNLOADS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_TEMP_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_PUBLIC_FOLDERS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_WINDOWS_PUBLISHER_1" />
+          <AllowedSigner SignerId="ID_SIGNER_MS_PRODUCT_SIGNING" />
+          <AllowedSigner SignerId="ID_SIGNER_MICROSOFT_CODE_SIGNING" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES" />
+          <FileRuleRef RuleID="ID_ALLOW_PROGRAM_FILES_X86" />
+          <FileRuleRef RuleID="ID_ALLOW_WINDOWS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_DOWNLOADS_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_TEMP_FOLDER" />
+          <FileRuleRef RuleID="ID_DENY_PUBLIC_FOLDERS" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+  <UpdatePolicySigners>
+  </UpdatePolicySigners>
+  <CiSigners>
+    <CiSigner SignerId="ID_SIGNER_MS_PRODUCT_SIGNING" />
+    <CiSigner SignerId="ID_SIGNER_MICROSOFT_CODE_SIGNING" />
+  </CiSigners>
+  <HvciOptions>0</HvciOptions>
+  <Settings>
+    <Setting Provider="AllHostIds" Key="EnterpriseDefinedConfiguration#D76C934D-6947-4795-BC27-D84E33CF4354" ValueName="EnableHVCI">
+      <Value>
+        <Boolean>true</Boolean>
+      </Value>
+    </Setting>
+  </Settings>
+</Policy>

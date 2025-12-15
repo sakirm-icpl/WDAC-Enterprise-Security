@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Policy xmlns="urn:schemas-microsoft-com:sipolicy" PolicyType="Supplemental Policy">
+  <VersionEx>1.0.0.0</VersionEx>
+  <BasePolicyID>{A1B2C3D4-E5F6-7890-GHIJ-KLMNOPQRSTUV}</BasePolicyID>
+  <Rules>
+    <Rule>
+      <Option>Enabled:Unsigned System Integrity Policy</Option>
+    </Rule>
+  </Rules>
+  <!--File Rules - Emergency Access Applications-->
+  <FileRules>
+    <!--Allow emergency troubleshooting tools-->
+    <Allow ID="ID_ALLOW_EMERGENCY_DIAG" FriendlyName="Emergency Diagnostics" FileName="diagtool.exe" FilePath="%PROGRAMFILES%\EmergencyTools\*" />
+    
+    <!--Allow temporary vendor software for critical fixes-->
+    <Allow ID="ID_ALLOW_TEMP_VENDOR" FriendlyName="Temporary Vendor Software" FileName="tempfix.exe" FilePath="%OSDRIVE%\Temp\Vendors\*" />
+    
+    <!--Allow backup and recovery tools-->
+    <Allow ID="ID_ALLOW_BACKUP_TOOLS" FriendlyName="Backup and Recovery Tools" FileName="backup.exe" MinimumFileVersion="0.0.0.0">
+      <Signer Id="ID_SIGNER_BACKUP">
+        <CertRoot Type="TBS" Value="F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4A5" />
+        <CertPublisher Value="Backup Solutions Corp." />
+      </Signer>
+    </Allow>
+  </FileRules>
+  <!--Signers-->
+  <Signers>
+    <Signer Name="Backup Solutions Corp." ID="ID_SIGNER_BACKUP">
+      <CertRoot Type="TBS" Value="F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4A5" />
+      <CertPublisher Value="Backup Solutions Corp." />
+    </Signer>
+  </Signers>
+  <!--Driver Signing Scenarios-->
+  <SigningScenarios>
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 08-15-2022">
+      <ProductSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_EMERGENCY_DIAG" />
+          <FileRuleRef RuleID="ID_ALLOW_TEMP_VENDOR" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Windows">
+      <ProductSigners>
+        <AllowedSigners>
+          <AllowedSigner SignerId="ID_SIGNER_BACKUP" />
+        </AllowedSigners>
+        <FileRulesRef>
+          <FileRuleRef RuleID="ID_ALLOW_EMERGENCY_DIAG" />
+          <FileRuleRef RuleID="ID_ALLOW_TEMP_VENDOR" />
+        </FileRulesRef>
+      </ProductSigners>
+    </SigningScenario>
+  </SigningScenarios>
+</Policy>

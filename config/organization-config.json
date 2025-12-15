@@ -1,0 +1,42 @@
+{
+  "organization": {
+    "name": "Acme Corporation",
+    "platformId": "{2E07F7E4-194C-4D20-B7C9-6F44A6C5A234}",
+    "allowedDomains": [
+      "microsoft.com",
+      "adobe.com",
+      "google.com"
+    ],
+    "trustedPublishers": [
+      "Microsoft Corporation",
+      "Adobe Systems Incorporated",
+      "Google LLC"
+    ]
+  },
+  "environments": {
+    "activeDirectory": {
+      "domain": "company.local",
+      "ouPath": "OU=Workstations,DC=company,DC=local"
+    },
+    "nonAd": {
+      "managementServer": "https://management.company.com"
+    },
+    "hybrid": {
+      "tenantId": "your-azure-tenant-id"
+    }
+  },
+  "paths": {
+    "programFiles": "%PROGRAMFILES%",
+    "programFilesX86": "%PROGRAMFILES(X86)%",
+    "windowsFolder": "%WINDIR%",
+    "userProfiles": "%OSDRIVE%\\Users",
+    "downloads": "%OSDRIVE%\\Users\\*\\Downloads",
+    "temp": "%OSDRIVE%\\Users\\*\\AppData\\Local\\Temp",
+    "public": "%OSDRIVE%\\Users\\Public"
+  },
+  "certificates": {
+    "windowsStoreEKU": "010A2B0601040182370A0301",
+    "microsoftProductSigning": "F6F74D185A25E4928881FC0DB33C9FB7F57956D51661DD8063F7F700BA8A548B",
+    "microsoftCodeSigningPCA2011": "AE9C1AE54763822EEC48CC4D8B154558570E247F4039714C204530831517894C"
+  }
+}

@@ -6,7 +6,7 @@ param(
     [string]$PolicyPath,
     
     [Parameter(Mandatory=$false)]
-    [switch]$Verbose
+    [switch]$DetailedLogging
 )
 
 function Write-Log {
@@ -25,7 +25,7 @@ function Write-Log {
         default { Write-Host $LogMessage -ForegroundColor White }
     }
     
-    if ($Verbose) {
+    if ($DetailedLogging) {
         Add-Content -Path "$env:TEMP\WDAC_Test_Log.txt" -Value $LogMessage
     }
 }
